@@ -119,7 +119,7 @@ class AdminController extends Controller
         $request->validate([
             'title' => 'required',
             'price' => 'required',
-            'about' => 'nullable',
+            'about' => 'required',
         ]);
 
         Item::create([
