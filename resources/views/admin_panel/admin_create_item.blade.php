@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+<div class="p-3">
 <h2 class="mb-3">Create Item</h2>
 <form class="row g-3" action="{{ route('admin.store') }}" method="post" enctype="multipart/form-data">
     @csrf
@@ -30,4 +31,5 @@
         <button class="btn btn-primary" type="submit">Create</button>
     </div>
 </form>
+</div>
 @endsection

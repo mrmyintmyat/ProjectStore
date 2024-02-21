@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string("title");
-            $table->longText('about')->nullable()->change();
+            $table->longText('about')->nullable();
             $table->string("price");
             $table->string("reduced_price")->nullable();
             $table->string("item_image");
