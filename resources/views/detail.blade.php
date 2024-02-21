@@ -8,7 +8,7 @@
                         <div
                             class="img-zoom-container p-0 col d-flex flex-column justify-content-center align-items-center ">
                             <img id="webimage" class="rounded-3" style="width: 100%; object-fit: contain;"
-                                src="/item_img/{{ $item->item_image }}" alt="">
+                                src="/storage/item_img/{{ $item->item_image }}" alt="">
                             <div class="d-flex justify-content-between align-items-center w-100 my-3 px-2">
                                 <h4 class="card-title fs-5 text-dark fw-semibold" id="title">
                                     {{ $item->title }}
@@ -357,7 +357,7 @@
                                 <div class="card h-100 home-card">
                                     <div class="parent">
                                         <div class="parent">
-                                            <div style="border-radius: 1rem 1rem 0px 0px; background: url('/item_img/{{ $reduced_item->item_image }}') no-repeat center; background-size: contain; height: 140px;"
+                                            <div style="border-radius: 1rem 1rem 0px 0px; background: url('/storage/item_img/{{ $reduced_item->item_image }}') no-repeat center; background-size: contain; height: 140px;"
                                                 data-bs-toggle="modal" data-bs-target="#staticBackdrop" src=""
                                                 class="card-img-top card_img d-flex justify-content-center align-items-center"
                                                 alt="..."> </div>
