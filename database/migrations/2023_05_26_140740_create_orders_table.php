@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('item_id');
             $table->string('total');
+            $table->longText('status')->default('reviewing');
             $table->string('count');
             $table->timestamps();
         });

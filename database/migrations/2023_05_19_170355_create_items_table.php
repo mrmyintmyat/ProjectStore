@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("price");
             $table->string("reduced_price")->nullable();
             $table->string("item_image");
+            $table->longText('sales')->default(0);
             $table->string('item_count');
             $table->timestamps();
         });
