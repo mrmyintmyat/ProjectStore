@@ -9,7 +9,7 @@
                     {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('item_img/{{ $item->item_image }}') no-repeat center; background-size: contain;"
                         class="card-img-top card_img mb-1">
                     </div> --}}
-                    <img src="item_img/{{ $item->item_image }}" alt=""
+                    <img src="/storage/item_img/{{ $item->item_image }}" alt=""
                         class="card-img-top card_img mb-1 rounded-top">
                 </div>
                 <div onclick="" class="card-body pt-0 pb-2 ps-2" id="item_title">
