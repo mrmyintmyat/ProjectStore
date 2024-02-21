@@ -1,0 +1,12 @@
+@media(min-width: 992px){
+   aside{
+    min-height: 100vh;
+   }
+}
+
+@media(max-width: 992px){
+    aside{
+     position: absolute;
+     bottom: 0px;
+    }
+ }
