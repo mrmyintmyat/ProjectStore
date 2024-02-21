@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -107,8 +108,12 @@ class AdminController extends Controller
         if ($image = $request->file('image')) {
             $destinationPath = 'item_img/';
             $item_img = date('YmdHis') . '.' . $image->getClientOriginalExtension();
-            $image->move($destinationPath, $item_img);
-            $image = "$item_img";
+
+            // Store the file in the storage disk
+            Storage::disk('public')->putFileAs($destinationPath, $image, $item_img);
+
+            // Update the image path
+            $image = $item_img;
         }
 
         $request->validate([
@@ -150,17 +155,24 @@ class AdminController extends Controller
     {
         $item = Item::find($id);
         $input = $request->all();
-        if ($request->hasfile('image') && $request->has('image')) {
-            $filepath = 'item_img/' . $item->image;
-            if (File::exists($filepath)) {
-                File::delete($filepath);
-            }
-            $image = $request->file('image');
+        if ($request->hasFile('image')) {
             $destinationPath = 'item_img/';
-            $item_img = date('YmdHis') . '.' . $image->getClientOriginalExtension();
-            $image->move($destinationPath, $item_img);
-            $image = "$item_img";
-            $item->item_image = $image;
+            $item_img = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
+
+            // Delete old image if it exists
+            if (!empty($item->item_image)) {
+                $oldImagePath = 'item_img/' . $item->item_image;
+                if (Storage::disk('public')->exists($oldImagePath)) {
+                    Storage::disk('public')->delete($oldImagePath);
+                }
+            }
+
+            // Store the new image
+            $imagePath = $request->file('image')->storeAs($destinationPath, $item_img, 'public');
+
+            // Update the image path
+            $item->item_image = $item_img;
+            $item->save();
         }
         $request->validate([
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -223,13 +235,13 @@ class AdminController extends Controller
                 continue;
             }
 
-            $filepath = 'item_img/' . $item->item_image;
-            if (File::exists($filepath)) {
-                File::delete($filepath);
+            $existingImagePath = 'item_img/' . $item->item_image;
+            if (Storage::disk('public')->exists($existingImagePath)) {
+                Storage::disk('public')->delete($existingImagePath);
             } else {
                 return view('auth.error_page');
             }
-            
+
             $orders = Order::where('item_id', $itemId)->get();
             $carts = Cart::where('item_id', $itemId)->get();
 
@@ -280,7 +292,6 @@ class AdminController extends Controller
             $item->update();
             $order->status = 'cancelled';
             $order->save();
-
         }
         return back()->with('success', 'Done');
     }
@@ -307,7 +318,6 @@ class AdminController extends Controller
             $item->update();
             $order->status = 'done';
             $order->save();
-
         }
         return back()->with('success', 'Done');
     }

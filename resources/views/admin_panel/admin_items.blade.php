@@ -26,7 +26,7 @@
                         <th scope="row">{{ $item->id }}</th>
                         <td class="col-1">
                             <a href="/item/detail/{{ $item->id }}">
-                                <img style="height: 100px; width:auto;" src="/item_img/{{ $item->item_image }}"
+                                <img style="height: 100px; width:auto;" src="/storage/item_img/{{ $item->item_image }}"
                                     alt="">
                             </a>
                         </td>
