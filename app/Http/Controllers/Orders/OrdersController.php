@@ -134,6 +134,7 @@ class OrdersController extends Controller
                 'user_id' => $user_id,
                 'user_name' => $user_name,
                 'item_id' => $item->id,
+                'status' => 'reviewing',
                 'total' => $total,
                 'count' => $count,
             ]);
@@ -285,6 +286,7 @@ class OrdersController extends Controller
                     'user_id' => $user->id,
                     'user_name' => $user_name,
                     'item_id' => $item->id,
+                    'status' => 'reviewing',
                     'total' => $total,
                     'count' => $count,
                 ]);
