@@ -6,23 +6,9 @@
                 <div class="row g-0 d-flex justify-content-center">
                     <div class="row row-cols-md-2 row-cols-1 ">
                         <div
-                            class="img-zoom-container p-0 col d-flex flex-column justify-content-center align-items-center ">
+                            class="img-zoom-container p-0 col-lg-7 d-flex flex-column justify-content-center align-items-center ">
                             <img id="webimage" class="rounded-3" style="width: 100%; object-fit: contain;"
                                 src="/storage/item_img/{{ $item->item_image }}" alt="">
-                            <div class="d-flex justify-content-between align-items-center w-100 my-3 px-2">
-                                <h4 class="card-title fs-5 text-dark fw-semibold" id="title">
-                                    {{ $item->title }}
-                                </h4>
-                                <div class="d-flex flex-column flex-wrap price_cart">
-                                    @if ($item->reduced_price == null)
-                                        <h4 class="my-0 price fw-semibold" style="">{{ $item->price }}</h4>
-                                    @else
-                                        <h4 class="my-0 price fw-semibold" id="reduced_price">{{ $item->reduced_price }}
-                                        </h4>
-                                        <p class="text-decoration-line-through my-0 text-muted">{{ $item->price }}</p>
-                                    @endif
-                                </div>
-                            </div>
                             <p class="card-text text-dark fs-6 mb-0">
                                 {!! $item->about !!}
                             </p>
@@ -68,8 +54,22 @@
                                 <small class="text-muted">{{ $item->item_count }} items left</small>
                             </p>
                         </div> --}}
-                        <div class="col mt-lg-3 disabled_tag p-0 px-md-3">
-                            <div id="item_title">
+                        <div class="col-lg-4 disabled_tag  h-100 p-0 px-md-3">
+                            <div id="item_title" class="border rounded p-3 pb-4 pt-0">
+                                <div class="d-flex justify-content-between align-items-center w-100 my-3 px-2">
+                                    <h4 class="card-title fs-5 text-dark fw-semibold" id="title">
+                                        {{ $item->title }}
+                                    </h4>
+                                    <div class="d-flex flex-column flex-wrap price_cart">
+                                        @if ($item->reduced_price == null)
+                                            <h4 class="my-0 price fw-semibold" style="">{{ $item->price }}</h4>
+                                        @else
+                                            <h4 class="my-0 price fw-semibold" id="reduced_price">{{ $item->reduced_price }}
+                                            </h4>
+                                            <p class="text-decoration-line-through my-0 text-muted">{{ $item->price }}</p>
+                                        @endif
+                                    </div>
+                                </div>
                                 @if (Auth::check())
                                     <form>
                                         @error('email')
@@ -336,7 +336,7 @@
                     </div>
                 </div>
             </div>
-            <h2 class="mt-lg-5 px-3">Discount Products</h2>
+            <h2 class="mt-lg-3 px-3">Discount Products</h2>
             <div id="result" class="d-flex flex-row p-2 g-sm-2 g-1 overflow-auto row-cols-desktop-6">
                 @if (count($reduced_items) === 0)
                     <div style="height: 10rem"
