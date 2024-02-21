@@ -79,7 +79,7 @@ use App\Models\Item;
                                 <div class="row g-0 h-100 w-100 border">
                                     <div class="col-md-3 col-5 h-100">
                                         <a class="w-100" href="/detail/{{ $item->id }}">
-                                            <img src="/item_img/{{ $item->item_image }}" class="h-100 w-100 img-fluid"
+                                            <img src="/storage/item_img/{{ $item->item_image }}" class="h-100 w-100 img-fluid"
                                                 alt="Error">
                                         </a>
                                     </div>
