@@ -5,7 +5,7 @@ use App\Models\Item;
 use App\Models\User;
 ?>
 @section('content')
-    <div class="px-3">
+    <div class="p-3">
         <div class="row flex-column flex-lg-row pt-md-4">
             <a href="/admin/orders" class="col text-decoration-none text-dark">
                 <div class="card mb-3">
