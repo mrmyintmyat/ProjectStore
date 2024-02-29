@@ -5,8 +5,20 @@ $(document).ready(function() {
     $('#searchForm').submit(function(e) {
         e.preventDefault();
     })
+
+    $('#searchForm2').submit(function(e) {
+        e.preventDefault();
+    })
+
+    $('.search').keyup(function(e) {
+        search(e, $(this));
+    })
+
     $('#search').keyup(function(e) {
-        var query = $(this).val();
+        search(e, $(this));
+    });
+    function search(e, input){
+        var query = input.val();
         var inputLength = query.length;
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         if (inputLength != 0) {
@@ -51,7 +63,7 @@ $(document).ready(function() {
             $('#item_container').show();
         }
 
-    });
+    }
     //scroll get item
     var route = "/";
     var nextPage = 2; // Current page

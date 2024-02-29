@@ -1,14 +1,14 @@
 @extends('layouts.home')
 @section('btn')
-    <section class="pt-lg-3 mt-3 px-2 d-none">
-        {{-- <article class="">
-            <form id="searchForm" method="post">
+    <section class="pt-lg-3 mt-3 px-2 d-lg-none d-block">
+        <article class="">
+            <form id="searchForm2" method="post">
                 @csrf
-                <input name="query" id="search" type="search" class="form-control px-4 border-1 shadow-sm"
+                <input name="query" id="search" type="search" class="search form-control px-4 border-1 shadow-sm"
                     placeholder="Search">
                 <meta name="csrf-token" content="{{ csrf_token() }}">
             </form>
-        </article> --}}
+        </article>
         {{-- <article class="">
             <ul id="btn-mother" class="list-unstyled py-3 mb-0">
 
