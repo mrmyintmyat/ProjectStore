@@ -10,9 +10,9 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Photos</th>
-                    <th scope="col">Titles</th>
+                    <th scope="col">Name</th>
                     {{-- <th scope="col">about</th> --}}
-                    {{-- <th scope="col">count</th> --}}
+                    <th scope="col">count</th>
                     <th scope="col">prices</th>
                     <th scope="col">reduced_price</th>
                     {{-- <th scope="col">Date</th> --}}
@@ -34,7 +34,7 @@
                             <h6> {{ $item->title }} </h6>
                         </td>
                         {{-- <td class="text-truncate" style="max-width: 150px;">{{ $item->about }}</td> --}}
-                        {{-- <td>{{ $item->item_count }}</td> --}}
+                        <td>{{ $item->item_count }}</td>
                         <td>
                             @if ($item->reduced_price == null)
                                 <p class="mb-0">{{ $item->price }}</p>

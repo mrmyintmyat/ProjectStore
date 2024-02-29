@@ -1,6 +1,6 @@
 @extends('layouts.home')
 @section('main')
-    <div class="w-100 p-3">
+    <div class="w-100 p-3 container-lg">
         <div class="row g-2">
             @if (Auth::check())
                 @if (count($notices) == 0)

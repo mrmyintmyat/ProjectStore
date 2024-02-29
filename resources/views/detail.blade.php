@@ -1,10 +1,10 @@
 @extends('layouts.home')
 @section('main')
-    <section class="pt-lg-3 pt-2 d-flex align-items-center shadow-sm">
+    <section class="pt-lg-3 pt-2 d-flex align-items-center shadow-sm container-lg">
         <div class="w-100 ">
             <div class="card my-2 border-0 mb-3 p-sm-2 d-flex justify-content-sm-center " style="">
                 <div class="row g-0 d-flex justify-content-center">
-                    <div class="row row-cols-md-2 row-cols-1 ">
+                    <div class="row row-cols-md-2 row-cols-1 d-flex justify-content-center">
                         <div
                             class="img-zoom-container p-0 col-lg-7 d-flex flex-column justify-content-center align-items-center ">
                             <img id="webimage" class="rounded-3" style="width: 100%; object-fit: contain;"
@@ -54,7 +54,7 @@
                                 <small class="text-muted">{{ $item->item_count }} items left</small>
                             </p>
                         </div> --}}
-                        <div class="col-lg-4 disabled_tag  h-100 p-0 px-md-3">
+                        <div class="col-lg-4 disabled_tag h-100 p-0 ms-lg-4 px-md-3">
                             <div id="item_title" class="border rounded p-3 pb-4 pt-0">
                                 <div class="d-flex justify-content-between align-items-center w-100 my-3 px-2">
                                     <h4 class="card-title fs-5 text-dark fw-semibold" id="title">

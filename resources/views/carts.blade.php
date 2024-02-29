@@ -3,13 +3,13 @@
 use App\Models\Item;
 ?>
 @section('main')
-    <div class="d-lg-none col-12 border">
+    <div class="d-lg-none position-fixed bottom-0 col-12 border">
         <div class=" w-100 d-flex flex-row">
             <div class="col-7 d-flex flex-column justify-content-center ps-4">
                 <div class="py-1">
-                    <div class="d-flex flex-row mb-0 p-0">
+                    {{-- <div class="d-flex flex-row mb-0 p-0">
                         <h6 class="mb-0">Count:</h6> &nbsp; <h6 class="count_total mb-0">0</h6>
-                    </div>
+                    </div> --}}
                     <div class="d-flex flex-row mb-0">
                         <h6 class="mb-0">Total:</h6> &nbsp; <h6 class="total mb-0">MMK0</h6>
                     </div>
@@ -23,7 +23,7 @@ use App\Models\Item;
             </div>
         </div>
     </div>
-    <section class="col-12 d-flex flex-lg-row flex-column justify-content-center p-1">
+    <section class="col-12 d-flex flex-lg-row flex-column justify-content-center p-1 container-lg">
 
         <div class="col-lg-8 col-12">
             <div class="row g-2">

@@ -53,7 +53,7 @@
                     {{-- <th scope="row">{{ $order->count }}</th> --}}
                     <th scope="row">{{ $order->created_at->diffForHumans(null, true) }} <p>{{ $order->created_at }}</p>
                     </th>
-                    <th scope="row">{{ $order->name }}</th>
+                    <th scope="row">{{ $order->user_name }}</th>
                     <th scope="row"><a href="mailto:{{ $user_email }}">{{ $user_email }}</a></th>
                     {{-- <th class="d-flex">
 

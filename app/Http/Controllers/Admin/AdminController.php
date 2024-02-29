@@ -81,13 +81,13 @@ class AdminController extends Controller
             ],
         ];
 
-        foreach ($items as $item) {
-            $order = Order::where('item_id', $item->id)->first();
+        // foreach ($items as $item) {
+        //     $order = Order::where('item_id', $item->id)->first();
 
-            if ($item->item_count == 0 && $order == null) {
-                $item->delete();
-            }
-        }
+        //     if ($item->item_count == 0 && $order == null) {
+        //         $item->delete();
+        //     }
+        // }
 
         foreach ($notices as $notice) {
             if ($notice->expires_at <= Carbon::now()) {

@@ -1,14 +1,14 @@
 @extends('layouts.home')
 @section('btn')
-    <section class="pt-lg-3 mt-3 px-2">
-        <article class="">
+    <section class="pt-lg-3 mt-3 px-2 d-none">
+        {{-- <article class="">
             <form id="searchForm" method="post">
                 @csrf
                 <input name="query" id="search" type="search" class="form-control px-4 border-1 shadow-sm"
                     placeholder="Search">
                 <meta name="csrf-token" content="{{ csrf_token() }}">
             </form>
-        </article>
+        </article> --}}
         {{-- <article class="">
             <ul id="btn-mother" class="list-unstyled py-3 mb-0">
 
@@ -28,11 +28,11 @@
     </section>
 @endsection
 @section('main')
-    <section class="px-2 mt-3">
+    <section class="px-2 container-lg mt-2">
         {{-- <h1 class="my-2">News</h1> --}}
         <div class="">
             <ul id="item_container"
-                class="list-unstyled row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5 g-sm-2 g-1 mb-3">
+                class="list-unstyled row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5 g-2 mb-3">
                 @foreach ($items as $item)
                     @if ($item->item_count != 0)
                         <div class="col">
@@ -44,7 +44,7 @@
                                             {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('item_img/{{ $item->item_image }}') no-repeat center; background-size: contain;"
                                                 class="card-img-top card_img mb-1">
                                             </div> --}}
-                                            <img src="/storage/item_img/{{ $item->item_image }}" alt=""
+                                            <img src="/item_img/{{ $item->item_image }}" alt=""
                                                 class="card-img-top card_img mb-1 rounded-top">
                                         </div>
                                         <div onclick="" class="card-body pt-0 pb-2 ps-2" id="item_title">
@@ -81,7 +81,7 @@
                 @endforeach
             </ul>
             <ul id="item_container_search"
-                class="list-unstyled row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5 g-sm-2 g-1 mb-3"
+                class="list-unstyled row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xxl-5 g-2 mb-3"
                 style="display: none">
             </ul>
             <div class="auto-load text-center w-100" style="display: none;">

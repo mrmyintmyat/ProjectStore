@@ -31,7 +31,7 @@ $items = Item::paginate(7);
     @endif
 @endsection
 @section('main')
-    <section class="mb-3">
+    <section class="mb-3 container-lg">
         <div class="shadow-sm p-lg-3 h-100 px-2">
             <h3 class="my-3 text-center">My Profile</h3>
             <section class="d-flex justify-content-center my-2 mb-lg-5">

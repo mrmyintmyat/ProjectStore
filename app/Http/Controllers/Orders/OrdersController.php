@@ -103,9 +103,9 @@ class OrdersController extends Controller
             $currency_symbol = $matches[0];
             $total = intval($price) * intval($count) . $currency_symbol;
         } else {
-            return back()->with('cart_item_left', 'Something went wrong.PLease Contact us!');
+            return back()->with('cart_item_left', 'Something went wrong.Please Contact us!');
         }
-        $item_count = $item->item_count; // - $count
+        $item_count = $item->item_count - $count; //
         $item->item_count = $item_count;
         $item->update();
 
@@ -161,30 +161,30 @@ class OrdersController extends Controller
         }
 
         } catch (\Exception $e) {
-            // $item_count = $item->item_count + $count;
-            // $item->item_count = $item_count;
-            // $item->update();
+            $item_count = $item->item_count + $count;
+            $item->item_count = $item_count;
+            $item->update();
 
             $order_2 = Order::where('item_id', $item->id)
                 ->where('user_id', $user_id)
                 ->latest()
                 ->first();
             if ($order_2) {
-                // $cartcount_total = $order_2->count - $count;
-                // $order_2->count = $cartcount_total;
+                $cartcount_total = $order_2->count - $count;
+                $order_2->count = $cartcount_total;
 
-                // $pricetotal = filter_var($order_2->total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                // $pricetotal = intval($pricetotal);
+                $pricetotal = filter_var($order_2->total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $pricetotal = intval($pricetotal);
 
-                // $itemTotal = filter_var($total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                // $itemTotal = intval($itemTotal);
+                $itemTotal = filter_var($total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                $itemTotal = intval($itemTotal);
 
-                // $order_2->total = $pricetotal - $itemTotal . $currency_symbol;
-                // $order_2->update();
+                $order_2->total = $pricetotal - $itemTotal . $currency_symbol;
+                $order_2->update();
 
-                // if ($cartcount_total == 0) {
-                // }
-                $order_2->delete();
+                if ($cartcount_total == 0) {
+                   $order_2->delete();
+                }
             }
 
             return view('auth.error_page');
@@ -258,7 +258,7 @@ class OrdersController extends Controller
                 return back()->with('cart_item_left', 'Something went wrong.PLease Contact us!');
             }
 
-            $item_count = $item->item_count; // - $count
+            $item_count = $item->item_count - $count; //
             $item->item_count = $item_count;
             $item->update();
 
@@ -307,6 +307,9 @@ class OrdersController extends Controller
                     $cart->total = $total;
                 }
                 $cart->update();
+                if ($item_count == 0) {
+                    $cart->delete();
+                }
             }
 
             $inputData['item_data'][$itemId]['id'] = $id;
@@ -351,7 +354,7 @@ class OrdersController extends Controller
                     return back()->with('cart_item_left', 'Something went wrong.PLease Contact us!');
                 }
 
-                $item_count = $item->item_count; // + $count
+                $item_count = $item->item_count + $count;
                 $item->item_count = $item_count;
                 $item->update();
 
@@ -359,21 +362,21 @@ class OrdersController extends Controller
                     ->where('user_id', $user->id)
                     ->first();
                 if ($order_2) {
-                    // $cartcount_total = $order_2->count - $count;
-                    // $order_2->count = $cartcount_total;
+                    $cartcount_total = $order_2->count - $count;
+                    $order_2->count = $cartcount_total;
 
-                    // $pricetotal = filter_var($order_2->total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    // $pricetotal = intval($pricetotal);
+                    $pricetotal = filter_var($order_2->total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $pricetotal = intval($pricetotal);
 
-                    // $itemTotal = filter_var($total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    // $itemTotal = intval($itemTotal);
+                    $itemTotal = filter_var($total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    $itemTotal = intval($itemTotal);
 
-                    // $order_2->total = $pricetotal - $itemTotal . $currency_symbol;
-                    // $order_2->update();
+                    $order_2->total = $pricetotal - $itemTotal . $currency_symbol;
+                    $order_2->update();
 
-                    // if ($cartcount_total == 0) {
+                    if ($cartcount_total == 0) {
                         $order_2->delete();
-                    // }
+                    }
                 }
 
                 $carts_user = Cart::find($cart_id);
