@@ -107,5 +107,5 @@
     </section>
 @endsection
 @section('script')
-    <script src="/js/scroll_data.js"></script>
+    <script src="/js/scroll_data.js?v=<?php echo time()?>"></script>
 @endsection
