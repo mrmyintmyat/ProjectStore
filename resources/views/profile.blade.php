@@ -107,9 +107,9 @@ $items = Item::paginate(7);
                         <div id="card" class="card border-0 border-light shadow-sm h-100 border">
                             <div class="parent">
                                 <a class="parent">
-                                    {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('/item_img/{{ $item->item_image }}') no-repeat center; background-size: contain; height: 120px;"
+                                    {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('/item-images/{{ $item->item_image }}') no-repeat center; background-size: contain; height: 120px;"
                                     class="card-img-top card_img d-flex justify-content-center align-items-center"> </div> --}}
-                                    <img class="card-img-top card_img" src="/storage/item_img/{{ $item->item_image }}"
+                                    <img class="card-img-top card_img" src="/storage/item-images/{{ $item->item_image }}"
                                         alt="">
                                 </a>
                             </div>
@@ -198,11 +198,11 @@ $items = Item::paginate(7);
                                 <div class="card h-100 home-card">
                                     <div class="parent">
                                         <div class="parent">
-                                            {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('/item_img/{{ $item->item_image }}') no-repeat center; background-size: contain; height: 140px;"
+                                            {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('/item-images/{{ $item->item_image }}') no-repeat center; background-size: contain; height: 140px;"
                                     data-bs-toggle="modal" data-bs-target="#staticBackdrop" src=""
                                     class="card-img-top card_img d-flex justify-content-center align-items-center"
                                     alt="..."> </div> --}}
-                                            <img src="/storage/item_img/{{ $item->item_image }}" class="card-img-top card_img"
+                                            <img src="/storage/item-images/{{ $item->item_image }}" class="card-img-top card_img"
                                                 alt="">
                                         </div>
                                     </div>

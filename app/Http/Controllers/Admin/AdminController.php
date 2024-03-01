@@ -108,7 +108,7 @@ class AdminController extends Controller
     {
         $input = $request->all();
         if ($image = $request->file('image')) {
-            $destinationPath = 'item_img/';
+            $destinationPath = 'item-images/';
             $item_img = date('YmdHis') . '.' . $image->getClientOriginalExtension();
 
             // Store the file in the storage disk
@@ -190,12 +190,12 @@ class AdminController extends Controller
         $item = Item::find($id);
         $input = $request->all();
         if ($request->hasFile('image')) {
-            $destinationPath = 'item_img/';
+            $destinationPath = 'item-images/';
             $item_img = date('YmdHis') . '.' . $request->file('image')->getClientOriginalExtension();
 
             // Delete old image if it exists
             if (!empty($item->item_image)) {
-                $oldImagePath = 'item_img/' . $item->item_image;
+                $oldImagePath = 'item-images/' . $item->item_image;
                 if (Storage::disk('public')->exists($oldImagePath)) {
                     Storage::disk('public')->delete($oldImagePath);
                 }
@@ -269,7 +269,7 @@ class AdminController extends Controller
                 continue;
             }
 
-            $existingImagePath = 'item_img/' . $item->item_image;
+            $existingImagePath = 'item-images/' . $item->item_image;
             if (Storage::disk('public')->exists($existingImagePath)) {
                 Storage::disk('public')->delete($existingImagePath);
             } else {

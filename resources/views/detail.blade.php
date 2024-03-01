@@ -38,8 +38,8 @@ echo $str;
                     <div class="row row-cols-md-2 row-cols-1 d-flex justify-content-center">
                         <div
                             class="img-zoom-container p-0 col-lg-7 d-flex flex-column justify-content-center align-items-center ">
-                            <img id="webimage" class="rounded-3" style="width: 100%; object-fit: contain;"
-                                src="/storage/item_img/{{ $item->item_image }}" alt="">
+                            <img id="webimage" class="rounded-3" style="width: 100%; height: auto;"
+                                src="/storage/item-images/{{ $item->item_image }}" alt="">
                                 <div class="card w-100 my-2 border-0">
                                     <div class="card-body">
                                             {!! $item->about !!}
@@ -390,7 +390,7 @@ echo $str;
                                 <div class="card h-100 home-card">
                                     <div class="parent">
                                         <div class="parent">
-                                            <div style="border-radius: 1rem 1rem 0px 0px; background: url('/storage/item_img/{{ $reduced_item->item_image }}') no-repeat center; background-size: contain; height: 140px;"
+                                            <div style="border-radius: 1rem 1rem 0px 0px; background: url('/storage/item-images/{{ $reduced_item->item_image }}') no-repeat center; background-size: contain; height: 140px;"
                                                 data-bs-toggle="modal" data-bs-target="#staticBackdrop" src=""
                                                 class="card-img-top card_img d-flex justify-content-center align-items-center"
                                                 alt="..."> </div>

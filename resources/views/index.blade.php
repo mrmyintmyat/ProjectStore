@@ -50,10 +50,10 @@
                                 <div class="card home-card h-100 border border-1 rounded-3">
                                     <div class="">
                                         <div class="parent">
-                                            {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('item_img/{{ $item->item_image }}') no-repeat center; background-size: contain;"
+                                            {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('item-images/{{ $item->item_image }}') no-repeat center; background-size: contain;"
                                                 class="card-img-top card_img mb-1">
                                             </div> --}}
-                                            <img src="/storage/item_img/{{ $item->item_image }}" alt=""
+                                            <img src="/storage/item-images/{{ $item->item_image }}" alt=""
                                                 class="card-img-top card_img mb-1 rounded-top">
                                         </div>
                                         <div onclick="" class="card-body pt-0 pb-2 ps-2" id="item_title">
