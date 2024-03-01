@@ -1,4 +1,13 @@
 @extends('layouts.home')
+@section('title')
+    Find your next project here!
+@endsection
+@section('description')
+    Find your next project here!
+@endsection
+@section('web_url')
+    {{ request()->url() }}
+@endsection
 @section('btn')
     <section class="pt-lg-3 mt-3 px-2 d-lg-none d-block">
         <article class="">

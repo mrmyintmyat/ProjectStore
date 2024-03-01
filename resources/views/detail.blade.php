@@ -1,4 +1,35 @@
 @extends('layouts.home')
+@section('title')
+    {{$item->title}}
+@endsection
+@section('description')
+<?php
+
+function htmlToStr($html) {
+    // Create a new DOMDocument
+    $dom = new DOMDocument();
+
+    // Load the HTML code into the DOMDocument
+    @$dom->loadHTML($html);
+
+    // Remove any HTML tags from the content
+    $body = $dom->getElementsByTagName('body')->item(0);
+    $str = $dom->saveHTML($body);
+    $str = preg_replace('#<(.*?)>#', '', $str);
+
+    // Return the string
+    return $str;
+}
+
+$html = $item->about;
+$str = htmlToStr($html);
+echo $str;
+
+?>
+@endsection
+@section('web_url')
+    {{ request()->url() }}
+@endsection
 @section('main')
     <section class="pt-lg-3 pt-2 d-flex align-items-center shadow-sm container-lg">
         <div class="w-100 ">

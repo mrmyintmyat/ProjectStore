@@ -4,7 +4,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>@yield('title')</title>
+    <meta name="description" content=`@yield('description')`>
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="@yield('web_url')">
+    <link rel="alternate" href="@yield('web_url')" hreflang="en">
+    <!-- Open Graph (OG) Tags for Social Media Sharing -->
+    <meta property="og:title" content="@yield('title')">
+    <meta property="og:description"
+        content="@yield('description')">
+    <meta property="og:image" content="@yield('image')">
+    <meta property="og:url" content="@yield('web_url')">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="/fontawesome-free-6.4.0-web/css/all.min.css">
