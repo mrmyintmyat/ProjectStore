@@ -140,7 +140,7 @@ class ItemController extends Controller
         } else {
             $item_price = $item->reduced_price;
         }
-        $count = (int) RequestFacade::get('count');
+        $count = 1; //(int) RequestFacade::get('count')
         $price = filter_var($item_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $pattern = '/^([A-Za-z]+)|([A-Za-z]+)$/';
 
@@ -155,6 +155,7 @@ class ItemController extends Controller
             ->where('user_id', $user->id)
             ->first();
         if ($cart) {
+            return back()->with('cart_item_left', 'Already added.');
             $cartcount_total = $cart->count + $count;
             if ($cartcount_total <= $item->item_count) {
                 $cart->count = $cartcount_total;

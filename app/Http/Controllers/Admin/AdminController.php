@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -116,17 +117,23 @@ class AdminController extends Controller
             $image = $item_img;
         }
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
+            'image' => 'required',
             'title' => 'required',
             'price' => 'required',
             'about' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Validation failed.');
+        }
 
         Item::create([
             'item_image' => $image,
             'title' => $request->title,
             'about' => $request->about,
             'price' => $request->price,
+            'reduced_price' => $request->reduced_price,
             'item_count' => $request->count,
         ]);
 
@@ -175,7 +182,6 @@ class AdminController extends Controller
             $item->save();
         }
         $request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'title' => 'required',
             'about' => 'required',
             'count' => 'required',
@@ -185,6 +191,7 @@ class AdminController extends Controller
         $item->title = $request->title;
         $item->about = $request->about;
         $item->price = $request->price;
+        $item->sales = $request->sales;
         $item->item_count = $request->count;
         $item->created_at = now();
 
@@ -202,7 +209,7 @@ class AdminController extends Controller
             $item_price = $item->reduced_price;
         }
         $price = filter_var($item_price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $pattern = '/^([A-Za-z]+)|^(\$)/';
+        $pattern = '/^([A-Za-z]+)|([A-Za-z]+)$/';
         if (preg_match($pattern, $item_price, $matches)) {
             $currency_symbol = $matches[0];
             // $total = $currency_symbol . intval($price) * intval($count);
@@ -245,15 +252,15 @@ class AdminController extends Controller
             $orders = Order::where('item_id', $itemId)->get();
             $carts = Cart::where('item_id', $itemId)->get();
 
-            foreach ($orders as $order) {
-                Notice::create([
-                    'user_id' => $order->user_id,
-                    'title' => 'Cancelled Order',
-                    'message' => 'Your ' . $item->title . ' order has been cancelled.',
-                ]);
+            // foreach ($orders as $order) {
+            //     Notice::create([
+            //         'user_id' => $order->user_id,
+            //         'title' => 'Cancelled Order',
+            //         'message' => 'Your ' . $item->title . ' order has been cancelled.',
+            //     ]);
 
-                $order->delete();
-            }
+            //     $order->delete();
+            // }
 
             foreach ($carts as $cart) {
                 Notice::create([
@@ -287,8 +294,8 @@ class AdminController extends Controller
                 'title' => 'Cancelled Order',
                 'message' => 'Your ' . $item->title . ' order has been cancelled.',
             ]);
-            // $item_count = $item->item_count + $order->count;
-            // $item->item_count = $item_count;
+            $item_count = $item->item_count + $order->count;
+            $item->item_count = $item_count;
             $item->update();
             $order->status = 'cancelled';
             $order->save();

@@ -3,29 +3,29 @@
 <div class="px-2">
 <h2 class="mb-3">Edit</h2>
 <form class="row g-3" action="{{ url('admin/'. $item->id) }}" method="post" enctype="multipart/form-data">
-    @csrf @method('PATCH')
+    @csrf @method('PUT')
     <div class="input-group">
         <label class="input-group-text" for="inputGroupFile01">Upload</label>
         <input type="file" name="image" class="form-control" id="inputGroupFile01">
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="validationDefault01" class="form-label">Title</label>
         <input type="text" name="title" class="form-control" id="validationDefault01"
             required value="{{ $item->title }}">
     </div>
-    <div class="col-md-4">
-        <label for="validationDefault01" class="form-label">About</label>
-        <textarea type="text" name="about" class="form-control" id="validationDefault01"
-            required value="">{{ $item->about }}</textarea>
-    </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="validationDefault01" class="form-label">Count</label>
         <input type="text" name="count" class="form-control" id="validationDefault01"
             required value="{{ $item->item_count }}">
     </div>
+    <div class="col-md-12">
+        <label for="validationDefault01" class="form-label">About</label>
+        <textarea type="text" name="about" rows="5" class="form-control" id="validationDefault01"
+            required value="">{{ $item->about }}</textarea>
+    </div>
     <div class="col-md-4">
         <label for="validationDefault01" class="form-label">Sales</label>
-        <input type="text" name="count" class="form-control" id="validationDefault01"
+        <input type="text" name="sales" class="form-control" id="validationDefault01"
             required value="{{ $item->sales }}">
     </div>
     <div class="col-md-4">

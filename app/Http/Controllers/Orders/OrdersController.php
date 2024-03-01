@@ -55,6 +55,7 @@ class OrdersController extends Controller
      */
     public function create_order(Request $request, string $id)
     {
+        // return $request;
         if ($request->method() !== 'POST') {
             return redirect('/');
         }
@@ -149,12 +150,12 @@ class OrdersController extends Controller
         });
 
         foreach ($carts as $cart) {
-            if ($item_count <= $cart->count) {
-                $cart->count = $item_count;
-                $total = intval($price) * intval($cart->count) . $currency_symbol;
-                $cart->total = $total;
-            }
-            $cart->update();
+            // if ($item_count <= $cart->count) {
+            //     $cart->count = $item_count;
+            //     $total = intval($price) * intval($cart->count) . $currency_symbol;
+            //     $cart->total = $total;
+            // }
+            // $cart->update();
             if ($item_count == 0) {
                 $cart->delete();
             }
@@ -218,7 +219,7 @@ class OrdersController extends Controller
             }
 
             $id = $item['id'];
-            $count = $item['count'];
+            $count = 1; //$item['count']
             $cart_id = $item['cart_id'];
             $item = Item::find($id);
             $carts = Cart::where('item_id', $id)->get();
@@ -267,6 +268,7 @@ class OrdersController extends Controller
                 ->latest()
                 ->first();
             if ($order && $order->status === 'reviewing') {
+                // continue;
                 // $cartcount_total = $order->count + $count;
                 // $order->count = $cartcount_total;
 
@@ -292,26 +294,6 @@ class OrdersController extends Controller
                 ]);
             }
 
-            $carts_user = Cart::find($cart_id);
-
-            $cart_count_total = $carts_user->count - $count;
-            $carts_user->count = $cart_count_total;
-            $total = intval($price) * intval($carts_user->count) . $currency_symbol;
-            $carts_user->total = $total;
-            $carts_user->update();
-
-            foreach ($carts as $cart) {
-                if ($cart->count <= $item_count) {
-                    $cart->count = $item_count;
-                    $total = intval($price) * intval($cart->count) . $currency_symbol;
-                    $cart->total = $total;
-                }
-                $cart->update();
-                if ($item_count == 0) {
-                    $cart->delete();
-                }
-            }
-
             $inputData['item_data'][$itemId]['id'] = $id;
             $inputData['item_data'][$itemId]['count'] = $count;
             $inputData['item_data'][$itemId]['cart_id'] = $cart_id;
@@ -325,6 +307,29 @@ class OrdersController extends Controller
                     ->subject('You have a new order! From Cart.')
                     ->html(view('auth.mail_style.email-cart-order', ['inputData' => $inputData])->render(), 'text/html');
             });
+
+            $carts_user = Cart::find($cart_id);
+
+            // if ($carts_user->count == 0) {
+              $carts_user->delete();
+            // }
+            // $cart_count_total = $carts_user->count - $count;
+            // $carts_user->count = $cart_count_total;
+            // $total = intval($price) * intval($carts_user->count) . $currency_symbol;
+            // $carts_user->total = $total;
+            // $carts_user->update();
+
+            foreach ($carts as $cart) {
+                // if ($cart->count <= $item_count) {
+                //     $cart->count = $item_count;
+                //     $total = intval($price) * intval($cart->count) . $currency_symbol;
+                //     $cart->total = $total;
+                // }
+                // $cart->update();
+                if ($item_count == 0) {
+                    $cart->delete();
+                }
+            }
         } catch (\Exception $e) {
             foreach ($inputData['item_data'] as $itemId => $item) {
                 if (!isset($item['id'])) {

@@ -28,6 +28,22 @@
             </div>
         </div>
     </div>
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container top-0 end-0 p-3">
+            <div id="toast" @if (session('error')) class="toast show" @endif class="toast"
+                role="alert" aria-live="assertive" aria-atomic="true" data-aos="fade-left">
+                <div class="toast-header">
+                    <i class="fa-solid fa-circle-check rounded me-2" style="color: #c31313;"></i>
+                    <strong class="me-auto">Error</strong>
+                    <small class="text-muted">just now</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{session('error')}}
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row d-flex flex-lg-row flex-column g-0">
         <aside class="col-lg-2  px-3 d-flex flex-lg-column flex-row" style="background: #15C7FF;">
             <h1 class=" h4 text-white text-center mt-4 d-none d-lg-inline">

@@ -157,10 +157,10 @@
                             <meta name="csrf-token" content="{{ csrf_token() }}">
                         </form>
                     </article>
-                    <a class="navbar-brand fw-semibold d-lg-none ms-2 d-block" href="#">{{ env("APP_NAME") }}</a>
+                    <a class="navbar-brand fw-semibold d-lg-none ms-2 d-block" href="/">{{ env("APP_NAME") }}</a>
                     @endif
                     @if (!request()->is('/'))
-                    <a class="navbar-brand fw-semibold " href="#">{{ env("APP_NAME") }}</a>
+                    <a class="navbar-brand fw-semibold " href="/">{{ env("APP_NAME") }}</a>
                     @endif
                     <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
