@@ -39,7 +39,7 @@ echo $str;
                         <div
                             class="img-zoom-container p-0 col-lg-7 d-flex flex-column justify-content-center align-items-center ">
                             <img id="webimage" class="rounded-3" style="width: 100%; object-fit: contain;"
-                                src="/item_img/{{ $item->item_image }}" alt="">
+                                src="/storage/item_img/{{ $item->item_image }}" alt="">
                                 <div class="card w-100 my-2 border-0">
                                     <div class="card-body">
                                             {!! $item->about !!}
