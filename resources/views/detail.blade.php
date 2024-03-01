@@ -39,10 +39,12 @@ echo $str;
                         <div
                             class="img-zoom-container p-0 col-lg-7 d-flex flex-column justify-content-center align-items-center ">
                             <img id="webimage" class="rounded-3" style="width: 100%; object-fit: contain;"
-                                src="/storage/item_img/{{ $item->item_image }}" alt="">
-                            <p class="card-text text-dark fs-6 mb-0">
-                                {!! $item->about !!}
-                            </p>
+                                src="/item_img/{{ $item->item_image }}" alt="">
+                                <div class="card w-100 my-2 border-0">
+                                    <div class="card-body">
+                                            {!! $item->about !!}
+                                    </div>
+                                  </div>
                         </div>
                         <div id="myresult" class="img-zoom-result d-none"></div>
 
@@ -383,7 +385,7 @@ echo $str;
                 @foreach ($reduced_items as $reduced_item)
                     @if ($reduced_item->item_count != 0)
                         <div class="col-sm-4 col-md-3 col-lg-2 col-6  m-2 mb-sm-2 mb-1 border-0 border-light rounded-4">
-                            <a href="{{ url('/item/detail/' . $reduced_item->id) }}" id="card"
+                            <a href="{{ url('detail/' . $reduced_item->id) }}" id="card"
                                 class=" h-100 text-decoration-none text-dark" style="max-width: 540px;">
                                 <div class="card h-100 home-card">
                                     <div class="parent">
