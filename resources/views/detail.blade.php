@@ -35,7 +35,7 @@ echo $str;
         <div class="w-100 ">
             <div class="card my-2 border-0 mb-3 p-sm-2 d-flex justify-content-sm-center " style="">
                 <div class="row g-0 d-flex justify-content-center">
-                    <div class="row row-cols-md-2 row-cols-1 d-flex justify-content-center">
+                    <div class="row row-cols-md-2 row-cols-1 d-flex justify-content-center p-0">
                         <div
                             class="img-zoom-container p-0 col-lg-7 d-flex flex-column justify-content-center align-items-center ">
                             <img id="webimage" class="rounded-3" style="width: 100%; height: auto;"
