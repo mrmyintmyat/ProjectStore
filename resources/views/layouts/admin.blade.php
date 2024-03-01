@@ -77,6 +77,12 @@
                             <span class=" d-none d-lg-inline">Items</span>
                         </a>
                     </li>
+                    <li class="text-center text-lg-start p-2">
+                        <a href="/admin/users" class="text-decoration-none text-white">
+                            <i class="fa-solid fa-users"></i>
+                            <span class=" d-none d-lg-inline">Users</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </aside>

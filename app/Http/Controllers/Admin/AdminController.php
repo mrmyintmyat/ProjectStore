@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Item;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Notice;
 use Illuminate\Http\Request;
@@ -145,6 +146,32 @@ class AdminController extends Controller
         $items = Item::latest()->paginate(10);
         return view('admin_panel.admin_items', compact('items'));
     }
+
+    public function users()
+    {
+        $users = User::latest()->paginate(10);
+        return view('admin_panel.admin_users', compact('users'));
+    }
+
+    public function updateStatus(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'new_status' => 'required|in:user,admin,ban',
+        ]);
+
+        // Find the user by ID
+        $user = User::findOrFail($request->user_id);
+
+        // Update the user status
+        $user->status = $request->new_status;
+        $user->save();
+
+        // Return a success response
+        return response()->json(['message' => 'User status updated successfully']);
+    }
+
     public function show(Request $request)
     {
         $status = $request->input('status', 'reviewing');

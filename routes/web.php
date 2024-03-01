@@ -40,6 +40,8 @@ Route::put('/profile/{id}', [ProfileController::class, 'update'])->middleware('a
 // });
 Route::post('/delete/item', 'App\Http\Controllers\Admin\AdminController@destroy');
 Route::get('/admin/items', [AdminController::class, 'items']);
+Route::get('/admin/users', [AdminController::class, 'users']);
+Route::post('/admin/update-user-status', [AdminController::class, 'updateStatus']);
 Route::post('/admin/cancel_order', [AdminController::class, 'cancel_order']);
 Route::post('/admin/done_order', [AdminController::class, 'done_order']);
 Route::resource('/admin', AdminController::class);

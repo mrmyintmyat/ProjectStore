@@ -25,6 +25,13 @@
             <strong>Your Password Wrong Or Email Not found.</strong>
         </span>
          @enderror
+         @if ($errors->has('lock'))
+         <span class="text-warning mb-3">
+             <strong>
+                 {{ $errors->first('lock') }}
+             </strong>
+         </span>
+     @endif
          @error('password')
          <span class="text-danger mb-3">
              <strong>{{ $message }}</strong>

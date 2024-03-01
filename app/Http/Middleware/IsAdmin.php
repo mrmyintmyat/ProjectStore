@@ -16,7 +16,10 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->status == 'admin') {
+        if (Auth::user()->status == 'ban') {
+            Auth::logout();
+            return redirect('/login')->withErrors(['lock' => 'Your account is locked']);
+        } else if (Auth::user()->status == 'admin') {
             return $next($request);
         }
         return redirect('/');
