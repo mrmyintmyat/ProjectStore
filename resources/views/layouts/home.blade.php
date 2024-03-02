@@ -189,6 +189,7 @@
                                     <span class="ms-2">Home</span>
                                 </a>
                             </li>
+                            @if (Auth::check())
                             <li class="nav-item ms-2">
                                 <a href="/cart" class="text-decoration-none d-flex align-items-center nav-link py-2  @if (request()->is('cart'))
                                     active
@@ -231,6 +232,17 @@
                                     <span class="ms-2">Notices</span>
                                 </a>
                             </li>
+                            @endif
+                            @if (!Auth::check())
+                            <li class="nav-item ms-2 text-center">
+                                <a href="/register" class="text-decoration-none d-flex align-items-center nav-link py-2  @if (request()->is('register'))
+                                    active
+                                    @endif">
+                                    <i class="fa-solid fa-user-plus" id="nav_icon"></i>
+                                    <span class="ms-2">Sign up</span>
+                                </a>
+                            </li>
+                            @endif
                             <li class="nav-item ms-2">
                                 @if (Auth::user())
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"

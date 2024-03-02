@@ -91,11 +91,11 @@ class AdminController extends Controller
         //     }
         // }
 
-        foreach ($notices as $notice) {
-            if ($notice->expires_at <= Carbon::now()) {
-                $notice->delete();
-            }
-        }
+        // foreach ($notices as $notice) {
+        //     if ($notice->expires_at <= Carbon::now()) {
+        //         $notice->delete();
+        //     }
+        // }
         return view('admin_panel.admin_home', compact('chartData'));
     }
 
