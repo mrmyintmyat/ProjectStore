@@ -76,11 +76,15 @@
                                                     </p>
                                                 @endif
                                             </div>
-                                            <p class="card-text">
+                                            <div class="card-text d-flex align-items-center">
+                                                <small class="text-muted">
+                                                    {{ $item->item_count }} left
+                                                </small>
+                                                <div class="mx-2" style="width: 2px; height: 0.8rem; background: #acaeb0;"></div>
                                                 <small class="text-muted">
                                                     {{ $item->sales }} sales
                                                 </small>
-                                            </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
