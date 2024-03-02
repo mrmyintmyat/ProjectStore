@@ -369,8 +369,9 @@ echo $str;
                     </div>
                 </div>
             </div>
-            <h2 class="mt-lg-3 px-3">Discount Products</h2>
-            <div id="result" class="d-flex flex-row p-2 g-sm-2 g-1 overflow-auto row-cols-desktop-6">
+            <div class="mx-lg-4">
+            <h2 class="mt-lg-3 px-2">Discount Products</h2>
+            <div id="result" class="d-flex flex-row p-lg-2 g-sm-2 g-1 overflow-auto row-cols-desktop-6">
                 @if (count($reduced_items) === 0)
                     <div style="height: 10rem"
                         class="d-flex justify-content-center align-items-center justify-content-md-start ms-md-4 w-100">
@@ -421,6 +422,7 @@ echo $str;
                     @endif
                 @endforeach
             </div>
+        </div>
         </div>
         </div>
     </section>

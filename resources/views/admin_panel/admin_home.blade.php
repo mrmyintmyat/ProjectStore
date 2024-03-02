@@ -10,10 +10,10 @@ use App\Models\User;
             <a href="/admin/orders" class="col text-decoration-none text-dark">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h3>{{ count(Order::all()) }}</h3>
+                        <h3>{{ count(Order::where("status", '=', 'reviewing')->get()) }}</h3>
                         <span class="text-secondary">
                             <i class="fa-solid fa-basket-shopping"></i>
-                            Orders
+                            Reviewing Orders
                         </span>
                     </div>
                 </div>
@@ -29,7 +29,7 @@ use App\Models\User;
                     </div>
                 </div>
             </a>
-            <div class="col">
+            <a href="/admin/users" class="col text-decoration-none text-dark">
                 <div class="card mb-3">
                     <div class="card-body">
                         <h3>{{ count(User::all()) }}</h3>
@@ -39,7 +39,7 @@ use App\Models\User;
                         </span>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col-md-6 col-12">
             <canvas class="w-100" id="orderChart" height="300"></canvas>
