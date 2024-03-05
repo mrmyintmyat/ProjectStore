@@ -18,7 +18,7 @@
                 <div style="display: flex; justify-content: center; width: 100%;">
                     <div
                         style="background-color: #007bff; color: white; font-size: 18px; font-weight: 600; padding: 8px 16px; border-radius: 5px; width: 100px; text-align: center;">
-                        453243
+                        {{ $verificationCode }}
                     </div>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-top: 20px;">
