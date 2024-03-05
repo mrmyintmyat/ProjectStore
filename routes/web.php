@@ -1,17 +1,18 @@
 <?php
+use App\Models\User;
+use Illuminate\Http\Request;
+use App\Helpers\VerificationHelper;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Profile\ProfileController;
+use App\Notifications\SMSNotification;
+use App\Http\Controllers\ItemController;
+use App\Notifications\VerifyEmailNotification;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Orders\OrdersController;
+use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Verified;
-use App\Models\User;
-use App\Notifications\VerifyEmailNotification;
-use App\Notifications\SMSNotification;
-use Illuminate\Support\Facades\Auth;
-use App\Helpers\VerificationHelper;
-use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,8 @@ Route::put('/profile/{id}', [ProfileController::class, 'update'])->middleware('a
 Route::post('/delete/item', 'App\Http\Controllers\Admin\AdminController@destroy');
 Route::get('/admin/items', [AdminController::class, 'items']);
 Route::get('/admin/users', [AdminController::class, 'users']);
+Route::get('/admin/users/{id}/edit', [AdminController::class, 'user_edit_form']);
+Route::put('/admin/users/{id}', [AdminController::class, 'user_update']);
 Route::post('/admin/update-user-status', [AdminController::class, 'updateStatus']);
 Route::post('/admin/cancel_order', [AdminController::class, 'cancel_order']);
 Route::post('/admin/done_order', [AdminController::class, 'done_order']);
@@ -60,6 +63,7 @@ Route::post('/search',  [ItemController::class, 'search'])->name('search');
 Auth::routes();
 
 Route::get('/verify-email', function (Request $request) {
+    Log::info("OK");
     $user = Auth::user();
     if ($user) {
         if ($user->email_verified_at == null) {
@@ -73,6 +77,7 @@ Route::get('/verify-email', function (Request $request) {
                 }
             }
             Session::put('item_id', $request->input('item_id'));
+            Session::put('cart', $request->input('cart'));
             return view('auth.verify');
         } else {
             return redirect('/');
@@ -85,6 +90,7 @@ Route::get('/verify-email', function (Request $request) {
 Route::post('/email_verify', function (Request $request)
 {
     $item_id = Session::get('item_id');
+    $cart = Session::get('cart');
 
       $isVerified = VerificationHelper::verifyEmailCode($request->verification_code);
 
@@ -94,6 +100,9 @@ Route::post('/email_verify', function (Request $request)
       if ($item_id) {
         Session::forget('item_id');
         return redirect('detail/'. $item_id)->with('success', 'Email verification successful.');
+      } else if($cart){
+        Session::forget('cart');
+        return redirect($cart)->with('success', 'Email verification successful.');
       }
       return redirect('/')->with('success', 'Email verification successful.');
 })->name('verify_email');

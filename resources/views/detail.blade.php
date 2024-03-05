@@ -272,6 +272,9 @@ echo $str;
                                                             Email</a>
                                                     </div>
                                                 @endif
+                                                <div class="input-group mb-2">
+                                                    <textarea name="note" class="form-control shadow-sm rounded-3 ps-3 p-2 text-dark" placeholder="note.." name="" id="" cols="30" rows="3"></textarea>
+                                                </div>
                                                 <div class="input-group p-0 col shadow-sm rounded-0 mb-0">
                                                     {{-- <span
                                     class="input-group-addon col-lg-2 col-3 d-flex align-items-center justify-content-center border">

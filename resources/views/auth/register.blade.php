@@ -3,112 +3,100 @@
 @section('content')
     <div class="container">
         <div class="loginBox">
-            <h3 class="fs-1 fw-bold">REGISTER</h3>
             @error('name')
-            <span class="text-warning">
-                <strong>{{ $message }}</strong>
-            </span>
+                <span class="text-warning">
+                    <strong>{{ $message }}</strong>
+                </span>
             @enderror
             @error('identifier')
-            <span class="text-warning">
-                <strong>{{ $message }}</strong>
-            </span>
+                <span class="text-warning">
+                    <strong>{{ $message }}</strong>
+                </span>
             @enderror
             @error('password')
-            <span class="text-warning">
-                <strong>{{ $message }}</strong>
-            </span>
+                <span class="text-warning">
+                    <strong>{{ $message }}</strong>
+                </span>
             @enderror
             @error('email')
+                <span class="text-warning">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+            @error('select_chat_id')
             <span class="text-warning">
                 <strong>{{ $message }}</strong>
             </span>
-            @enderror
+        @enderror
             <form action="{{ route('register') }}" method="post">
                 @csrf
-                <div class="inputBox">
-                    <input id="name" type="text" class="@error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus  placeholder="Name">
-                    <input id="identifier" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email" aria-describedby="emailHelp">
+                <div id="form1">
+                    <h3 class="fs-1 fw-bold">REGISTER</h3>
+                    <div class="inputBox">
+                        <input id="name" type="text" class="@error('name') is-invalid @enderror" name="name"
+                            value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Name">
 
-                    <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Password">
-                    <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
+                        <input id="identifier" type="email" class="@error('email') is-invalid @enderror" name="email"
+                            value="{{ old('email') }}" required autocomplete="email" placeholder="Email"
+                            aria-describedby="emailHelp">
+
+                        <input id="password" type="password" class="@error('password') is-invalid @enderror"
+                            name="password" required autocomplete="new-password" placeholder="Password" value="{{ old('password') }}" >
+
+                        <input id="password-confirm" type="password" name="password_confirmation" required
+                            autocomplete="new-password" placeholder="Confirm Password" value="{{ old('password_confirmation') }}">
+                    </div>
+                    <input type="button" value="Next" onclick="toggleFormDisplay('form1', 'form2')">
                 </div>
+
+                <div id="form2" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <button type="button" onclick="toggleFormDisplay('form1', 'form2')"
+                            class="me-2 border-0 bg-light rounded-circle fs-6 py-2 px-3">
+                            <i class="fa-solid fa-chevron-left"></i></button>
+                                <h3 class="fw-bold p-0">CHAT ID</h3>
+                                <div class="col-2"></div>
+                    </div>
+                    <div class="inputBox" class="">
+
+                        <select name="select_chat_id" id="select_chat_id">
+                            <option value="messenger" selected>Messenger</option>
+                            <option value="telegram">Telegram</option>
+                            <option value="skype">Skype</option>
+                            <option value="whatsapp">Whatsapp</option>
+                            <option value="viber">Viber</option>
+                        </select>
+
+                        <input id="chat_id" type="text" class="@error('chat_id') is-invalid @enderror" name="chat_id"
+                            value="{{ old('chat_id') }}" required autocomplete="chat_id" autofocus placeholder="Chat Id">
+                    </div>
                     <input type="submit" name="" value="Register">
+                </div>
             </form>
             <div class="text-center">
                 <p class="text-black mb-0">Do you have an account?</p>
                 <a href="/login">Login here</a>
             </div>
         </div>
-        {{-- <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Register') }}</div>
-
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
-
-                            <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="identifier" class="col-md-4 col-form-label text-md-right">Email or Phone</label>
-                                <div class="col-md-6">
-                                <input id="identifier" type="text" class="form-control @error('identifier') is-invalid @enderror" name="identifier" value="{{ old('identifier') }}" required autocomplete="identifier" autofocus>
-
-                                @error('identifier')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Register') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
     </div>
+    <script>
+        function toggleFormDisplay(currentFormId, nextFormId) {
+            var currentForm = document.getElementById(currentFormId);
+            var nextForm = document.getElementById(nextFormId);
+
+            // Toggle the display property of the current form
+            if (currentForm.style.display === "none") {
+                currentForm.style.display = "block";
+            } else {
+                currentForm.style.display = "none";
+            }
+
+            // Toggle the display property of the next form
+            if (nextForm.style.display === "none") {
+                nextForm.style.display = "block";
+            } else {
+                nextForm.style.display = "none";
+            }
+        }
+    </script>
 @endsection

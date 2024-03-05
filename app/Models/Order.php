@@ -16,6 +16,7 @@ class Order extends Model
         'item_id',
         'status',
         'total',
+        'note',
         'count',
     ];
 

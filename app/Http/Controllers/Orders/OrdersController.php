@@ -64,7 +64,7 @@ class OrdersController extends Controller
         $user = Auth::user();
 
         if ($user->email_verified_at == null){
-            return redirect()->route('email_verify_form', ['id' => $id]);
+            return redirect()->route('email_verify_form', ['item_id' => $id]);
         }
         $carts = Cart::where('item_id', $id)->get();
         if (!$item) {
@@ -87,8 +87,7 @@ class OrdersController extends Controller
             $user_name = $user->name;
             $user_id = $user->id;
 
-            $emailuser->name = $user_name;
-            $emailuser->email = $user->email;
+            $emailuser = $user;
         }
 
         if ($request->price == 'price') {
@@ -106,7 +105,7 @@ class OrdersController extends Controller
         } else {
             return back()->with('cart_item_left', 'Something went wrong.Please Contact us!');
         }
-        $item_count = $item->item_count - $count; //
+        $item_count = $item->item_count;// - $count
         $item->item_count = $item_count;
         $item->update();
 
@@ -136,6 +135,7 @@ class OrdersController extends Controller
                 'user_name' => $user_name,
                 'item_id' => $item->id,
                 'status' => 'reviewing',
+                'note' => $request->note,
                 'total' => $total,
                 'count' => $count,
             ]);
@@ -162,7 +162,7 @@ class OrdersController extends Controller
         }
 
         } catch (\Exception $e) {
-            $item_count = $item->item_count + $count;
+            $item_count = $item->item_count; // + $count
             $item->item_count = $item_count;
             $item->update();
 
@@ -171,21 +171,22 @@ class OrdersController extends Controller
                 ->latest()
                 ->first();
             if ($order_2) {
-                $cartcount_total = $order_2->count - $count;
-                $order_2->count = $cartcount_total;
+                // $cartcount_total = $order_2->count - $count;
+                // $order_2->count = $cartcount_total;
 
-                $pricetotal = filter_var($order_2->total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                $pricetotal = intval($pricetotal);
+                // $pricetotal = filter_var($order_2->total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                // $pricetotal = intval($pricetotal);
 
-                $itemTotal = filter_var($total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                $itemTotal = intval($itemTotal);
+                // $itemTotal = filter_var($total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                // $itemTotal = intval($itemTotal);
 
-                $order_2->total = $pricetotal - $itemTotal . $currency_symbol;
-                $order_2->update();
+                // $order_2->total = $pricetotal - $itemTotal . $currency_symbol;
+                // $order_2->update();
 
-                if ($cartcount_total == 0) {
-                   $order_2->delete();
-                }
+                // if ($cartcount_total == 0) {
+                //    $order_2->delete();
+                // }
+                $order_2->delete();
             }
 
             return view('auth.error_page');
@@ -201,6 +202,12 @@ class OrdersController extends Controller
     public function create_order_cart(Request $request)
     {
         $inputData = [];
+
+         $user = Auth::user();
+
+        if ($user->email_verified_at == null){
+            return redirect()->route('email_verify_form', ['cart' => 'cart']);
+        }
         // foreach ($request->input() as $key => $value) {
         //     if (is_array($value)) {
         //         $nestedItem = [];
@@ -242,7 +249,7 @@ class OrdersController extends Controller
                 $emailuser->email = $user->email;
             }
 
-            $check_cart_price = Cart::find($cart_id);
+            $check_cart_price = Cart::findOrfail($cart_id);
 
             if ($check_cart_price->check_price == 'org_price') {
                 $item_price = $item->price;
@@ -259,7 +266,7 @@ class OrdersController extends Controller
                 return back()->with('cart_item_left', 'Something went wrong.PLease Contact us!');
             }
 
-            $item_count = $item->item_count - $count; //
+            $item_count = $item->item_count; // - $count
             $item->item_count = $item_count;
             $item->update();
 
@@ -268,6 +275,15 @@ class OrdersController extends Controller
                 ->latest()
                 ->first();
             if ($order && $order->status === 'reviewing') {
+                $order = Order::update([
+                    'user_id' => $user->id,
+                    'user_name' => $user_name,
+                    'item_id' => $item->id,
+                    'status' => 'reviewing',
+                    'total' => $total,
+                    'note' => $request->note,
+                    'count' => $count,
+                ]);
                 // continue;
                 // $cartcount_total = $order->count + $count;
                 // $order->count = $cartcount_total;
@@ -290,6 +306,7 @@ class OrdersController extends Controller
                     'item_id' => $item->id,
                     'status' => 'reviewing',
                     'total' => $total,
+                    'note' => $request->note,
                     'count' => $count,
                 ]);
             }
@@ -301,17 +318,17 @@ class OrdersController extends Controller
         }
         // return $inputData;
         try {
-            Mail::send([], [], function (Message $message) use ($inputData) {
+            Mail::send([], [], function (Message $message) use ($inputData, $request) {
                 $message
                     ->to('myam6552@gmail.com')
                     ->subject('You have a new order! From Cart.')
-                    ->html(view('auth.mail_style.email-cart-order', ['inputData' => $inputData])->render(), 'text/html');
+                    ->html(view('auth.mail_style.email-cart-order', ['inputData' => $inputData, 'note' => $request->note])->render(), 'text/html');
             });
 
-            $carts_user = Cart::find($cart_id);
+            // $carts_user = Cart::find($cart_id);
 
             // if ($carts_user->count == 0) {
-              $carts_user->delete();
+            //   $carts_user->delete();
             // }
             // $cart_count_total = $carts_user->count - $count;
             // $carts_user->count = $cart_count_total;
@@ -319,17 +336,17 @@ class OrdersController extends Controller
             // $carts_user->total = $total;
             // $carts_user->update();
 
-            foreach ($carts as $cart) {
-                // if ($cart->count <= $item_count) {
-                //     $cart->count = $item_count;
-                //     $total = intval($price) * intval($cart->count) . $currency_symbol;
-                //     $cart->total = $total;
-                // }
-                // $cart->update();
-                if ($item_count == 0) {
-                    $cart->delete();
-                }
-            }
+            // foreach ($carts as $cart) {
+            //     // if ($cart->count <= $item_count) {
+            //     //     $cart->count = $item_count;
+            //     //     $total = intval($price) * intval($cart->count) . $currency_symbol;
+            //     //     $cart->total = $total;
+            //     // }
+            //     // $cart->update();
+            //     if ($item_count == 0) {
+            //         $cart->delete();
+            //     }
+            // }
         } catch (\Exception $e) {
             foreach ($inputData['item_data'] as $itemId => $item) {
                 if (!isset($item['id'])) {
@@ -359,7 +376,7 @@ class OrdersController extends Controller
                     return back()->with('cart_item_left', 'Something went wrong.PLease Contact us!');
                 }
 
-                $item_count = $item->item_count + $count;
+                $item_count = $item->item_count;//+ $count
                 $item->item_count = $item_count;
                 $item->update();
 
@@ -367,45 +384,45 @@ class OrdersController extends Controller
                     ->where('user_id', $user->id)
                     ->first();
                 if ($order_2) {
-                    $cartcount_total = $order_2->count - $count;
-                    $order_2->count = $cartcount_total;
+                    // $cartcount_total = $order_2->count - $count;
+                    // $order_2->count = $cartcount_total;
 
-                    $pricetotal = filter_var($order_2->total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    $pricetotal = intval($pricetotal);
+                    // $pricetotal = filter_var($order_2->total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    // $pricetotal = intval($pricetotal);
 
-                    $itemTotal = filter_var($total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-                    $itemTotal = intval($itemTotal);
+                    // $itemTotal = filter_var($total, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                    // $itemTotal = intval($itemTotal);
 
-                    $order_2->total = $pricetotal - $itemTotal . $currency_symbol;
-                    $order_2->update();
+                    // $order_2->total = $pricetotal - $itemTotal . $currency_symbol;
+                    // $order_2->update();
 
-                    if ($cartcount_total == 0) {
-                        $order_2->delete();
-                    }
+                    // if ($cartcount_total == 0) {
+                        // $order_2->delete();
+                    // }
+                    $order_2->delete();
                 }
 
-                $carts_user = Cart::find($cart_id);
-                $cart_count_total = $carts_user->count;
-                $carts_user->count = $cart_count_total;
-                $total = intval($price) * intval($carts_user->count) . $currency_symbol;
-                $carts_user->total = $total;
-                $carts_user->update();
+                // $carts_user = Cart::find($cart_id);
+                // $cart_count_total = $carts_user->count;
+                // $carts_user->count = $cart_count_total;
+                // $total = intval($price) * intval($carts_user->count) . $currency_symbol;
+                // $carts_user->total = $total;
+                // $carts_user->update();
 
-                foreach ($carts as $cart) {
-                    if ($cart->count <= $item_count) {
-                        $cart->count = $item_count;
-                        $total = intval($price) * intval($cart->count) . $currency_symbol;
-                        $cart->total = $total;
-                    }
-                    $cart->update();
-                }
+                // foreach ($carts as $cart) {
+                //     if ($cart->count <= $item_count) {
+                //         $cart->count = $item_count;
+                //         $total = intval($price) * intval($cart->count) . $currency_symbol;
+                //         $cart->total = $total;
+                //     }
+                //     $cart->update();
+                // }
             }
             return view('auth.error_page');
         }
         foreach ($inputData['item_data'] as $key => $item) {
-            $carts = Cart::where('user_id', Auth::user()->id)
-                ->where('id', '=', $item['id'])
-                ->get();
+            $cart_id = $item['cart_id'];
+            $cart = Cart::find($cart_id);
             $cart->delete();
         }
         return back()->with('seccess_order', 'We will mail to you.');

@@ -30,6 +30,8 @@ $(document).ready(function() {
         let checkboxes = cart.find("input[type='checkbox']");
 
         let get_price = cart.find(".price");
+        let priceText = get_price.text();
+        let currency = priceText.match(/[A-Z]+/);
         let org_price = cart.find("#org_price");
         let price = parseFloat(get_price.text().replace(/\D/g, ''));
         let plus_price = parseFloat(org_price.html().replace(/\D/g, ''));
@@ -60,7 +62,7 @@ $(document).ready(function() {
 
             // Update UI
 
-            priceElements.text("MMK" + totalPrice.toFixed(0));
+            priceElements.text(totalPrice.toFixed(0) + currency[0]);
             price = totalPrice;
             // total.each(function() {
             //     // let total_price = parseFloat($(this).text().replace(/\D/g,
@@ -85,7 +87,7 @@ $(document).ready(function() {
                         let total_price = parseFloat($(this).text().replace(
                             /\D/g, ''));
                         total_price = total_price += plus_price;
-                        $(this).text("MMK" + total_price.toFixed(0));
+                        $(this).text(total_price.toFixed(0) + currency[0]);
                     });
                 }
             }
@@ -109,7 +111,7 @@ $(document).ready(function() {
                 totalPrice = price - plus_price;
 
                 // Update UI
-                priceElements.text("MMK" + totalPrice.toFixed(0));
+                priceElements.text(totalPrice.toFixed(0) + currency[0]);
                 price = totalPrice
 
                 let isChecked = checkboxes.is(":checked");
@@ -126,7 +128,7 @@ $(document).ready(function() {
                             let total_price = parseFloat($(this).text().replace(
                                 /\D/g, ''));
                             total_price = total_price -= plus_price;
-                            $(this).text("MMK" + total_price.toFixed(0));
+                            $(this).text(total_price.toFixed(0) + currency[0]);
                         });
                     }
                 }
@@ -163,7 +165,7 @@ $(document).ready(function() {
                         let total_price = parseFloat($(this).text().replace(/\D/g,
                             ""));
                         total_price += price;
-                        $(this).text("MMK" + total_price.toFixed(0));
+                        $(this).text(total_price.toFixed(0) + currency[0]);
                         if (total_price !== 0) {
                             undisabled.prop("disabled", false);
                         }
@@ -181,7 +183,7 @@ $(document).ready(function() {
                         let total_price = parseFloat($(this).text().replace(/\D/g,
                             ""));
                         total_price -= price;
-                        $(this).text("MMK" + total_price.toFixed(0));
+                        $(this).text(total_price.toFixed(0) + currency[0]);
                         if (total_price === 0) {
                             undisabled.prop("disabled", true);
                         }

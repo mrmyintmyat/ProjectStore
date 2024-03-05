@@ -153,6 +153,38 @@ class AdminController extends Controller
         return view('admin_panel.admin_users', compact('users'));
     }
 
+    public function user_edit_form($id){
+        $user = User::find($id);
+        return view('admin_panel.admin_edit_user', compact('user'));
+    }
+
+    public function user_update(Request $request, $id){
+        $user = User::findOrFail($id);
+
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'status' => 'required|in:user,admin,ban',
+            'chat_id' => 'required|string|max:255',
+            'created_at' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        // Update the user with the validated data
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'status' => $request->status,
+            'chat_id' => $request->chat_id,
+        ]);
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'User updated successfully.');
+    }
+
     public function updateStatus(Request $request)
     {
         // Validate the incoming request data
@@ -321,9 +353,9 @@ class AdminController extends Controller
                 'title' => 'Cancelled Order',
                 'message' => 'Your ' . $item->title . ' order has been cancelled.',
             ]);
-            $item_count = $item->item_count + $order->count;
-            $item->item_count = $item_count;
-            $item->update();
+            // $item_count = $item->item_count + $order->count;
+            // $item->item_count = $item_count;
+            // $item->update();
             $order->status = 'cancelled';
             $order->save();
         }
@@ -341,6 +373,8 @@ class AdminController extends Controller
             }
 
             $item = Item::find($order->item_id);
+            $carts = Cart::where('item_id', $item->$id)->get();
+
             $noti = Notice::create([
                 'user_id' => $order->user_id,
                 'title' => 'Thank You for Your Order',
@@ -348,10 +382,18 @@ class AdminController extends Controller
             ]);
 
             $item_sales = $item->sales + 1;
+            $item_count = $item->item_count - 1;
+            $item->item_count = $item_count;
             $item->sales = $item_sales;
             $item->update();
             $order->status = 'done';
             $order->save();
+
+            foreach ($carts as $cart) {
+                if ($item_count == 0) {
+                    $cart->delete();
+                }
+            }
         }
         return back()->with('success', 'Done');
     }

@@ -6,7 +6,7 @@ use App\Models\Item;
     <div class="d-lg-none position-fixed bottom-0 col-12 border">
         <div class=" w-100 d-flex flex-row">
             <div class="col-7 d-flex flex-column justify-content-center ps-4">
-                <div class="py-1">
+                <div class="py-2">
                     {{-- <div class="d-flex flex-row mb-0 p-0">
                         <h6 class="mb-0">Count:</h6> &nbsp; <h6 class="count_total mb-0">0</h6>
                     </div> --}}
@@ -201,14 +201,17 @@ use App\Models\Item;
                                             0
                                         </div>
                                     </div>
-                                    <div class="input-group p-0 col rounded-0 mb-0">
+                                    <div class="input-group p-0 col rounded-0 mb-2">
                                         <span
                                             class="input-group-addon col-lg-2 col-3 d-flex align-items-center justify-content-center border">
                                             Total
                                         </span>
                                         <div class="form-control text-dark rounded-0 total">
-                                            MMK0
+                                            0MMK
                                         </div>
+                                    </div>
+                                    <div class="input-group mb-2 px-2">
+                                        <textarea name="note" class="form-control shadow-sm rounded-3 ps-3 p-2 text-dark" placeholder="note.." name="" id="" cols="30" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <div class="modal-footer border-0 p-0 px-2 pb-2">
@@ -240,7 +243,7 @@ use App\Models\Item;
                         <span class="input-group-addon border">
                             Total
                         </span>
-                        <div class="form-control text-dark rounded-0 total">MMK0</div>
+                        <div class="form-control text-dark rounded-0 total">0MMK</div>
                     </div>
                     <div class="input-group p-0 col shadow-sm rounded-0 mb-2">
                         <span class="input-group-addon border">
@@ -269,7 +272,7 @@ use App\Models\Item;
 @endsection
 
 @section('script')
-    <script src="/js/carts.js"></script>
+    <script src="/js/carts.js?v=<?php echo time()?>"></script>
     <script>
         function deleteSelectedItems() {
 

@@ -2,28 +2,33 @@
 <html>
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/f0be33b496.js" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Email verification code: {{ $verificationCode }}</title>
 </head>
 
-<body>
-    <div class="container">
-        <div class="d-flex flex-column align-items-center py-5">
-            <div class="bg-white border shadow-sm d-flex flex-column align-items-center col-12 col-lg-5 pt-4">
-                <p class="fs-3 fw-semibold">Verify your email</p>
-                <div style="height: 1.8px;" class="w-75 shadow bg-black rounded-pill mb-2"></div>
-                <p class="fs-5">Your verification code is:</p>
-                <div class="rounded-0 fs-4 bg-primary px-2 py-1 fw-semibold text-white text-center" style="width: 100px;">{{ $verificationCode }}</div>
-                <div class="d-flex w-100 justify-content-around mt-3 mb-3">
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif;">
+    <div style="">
+        <div style="display: flex; flex-direction: column; align-items: center; padding: 20px;">
+            <div
+                style="background-color: white; border: 1px solid #ddd; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); border-radius: 5px; max-width: 500px; width: 100%; padding: 20px;">
+                <p style="font-size: 24px; font-weight: 600; margin: 0 0 10px; text-align: center;">Verify your email</p>
+                <hr style="height: 1px; background-color: black; border: none;">
+                <p style="font-size: 20px; margin: 0 0 10px; text-align: center;">Your verification code is:</p>
+                <div style="display: flex; justify-content: center; width: 100%;">
+                    <div
+                        style="background-color: #007bff; color: white; font-size: 18px; font-weight: 600; padding: 8px 16px; border-radius: 5px; width: 100px; text-align: center;">
+                        453243
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
                     <div>
                         <a href="https://www.facebook.com/hmxdigital"
-                        class="text-info text-decoration-none">facebook page</a>
+                            style="text-decoration: none; color: #007bff;">Facebook Page</a>
                     </div>
                     <div>
-                    <a href="https://www.facebook.com/htetmyataung1288"
-                        class="text-info text-decoration-none ms-4">facebook account</a>
+                        <a href="https://www.facebook.com/htetmyataung1288"
+                            style="text-decoration: none; color: #007bff; margin-left: 20px;">Facebook Account</a>
                     </div>
                 </div>
             </div>

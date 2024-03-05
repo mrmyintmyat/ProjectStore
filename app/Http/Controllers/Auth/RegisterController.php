@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Validation\Rule;
-use App\Notifications\VerifyEmailNotification;
-use Illuminate\Auth\Events\Verified;
-use App\Notifications\SMSNotification;
-use App\Helpers\VerificationHelper;
 use App\Channels\TwilioChannel;
+use Illuminate\Validation\Rule;
+use App\Helpers\VerificationHelper;
+use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Notifications\SMSNotification;
+use Illuminate\Auth\Events\Registered;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use App\Notifications\VerifyEmailNotification;
+use Illuminate\Foundation\Auth\RegistersUsers;
+
 class RegisterController extends Controller
 {
     use RegistersUsers;
@@ -42,6 +44,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'chat_id' => $data['chat_id'],
             'password' => Hash::make($data['password']),
         ]);
     }
@@ -53,42 +56,46 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:14'],
-            'email' => ['required', 'string', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'select_chat_id' => ['required'],
+            'chat_id' => ['required'], // Ensure chat_id is an array
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        $isEmail = filter_var($request->email, FILTER_VALIDATE_EMAIL);
+        // Extract chat_id selection and value from the request
+        $chatIdSelection = $request->input('select_chat_id');
+        $chatIdValue = $request->input('chat_id');
 
-        if ($isEmail) {
-
-        $emailExists = User::where('email', $request->email)->exists();
-        if ($emailExists) {
-            $errorMessage = 'The email is already registered. Please choose a different email.';
-            return back()->withErrors(['email' => $errorMessage]);
+        // Ensure chat_id selection is one of the expected values
+        if (!in_array($chatIdSelection, ['messenger', 'telegram', 'skype', 'whatsapp', 'viber'])) {
+            return back()->withErrors(['select_chat_id' => 'Invalid chat platform selection'])->withInput();
         }
 
-            $user = $this->create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password,
-            ]);
+        // Combine the chat_id selection and value into an associative array
+        $chatIdData = [
+            $chatIdSelection => $chatIdValue,
+        ];
 
-            Session::put('id', $user->id);
+        $serializedChatIdData = json_encode($chatIdData);
+        // Additional validation logic if needed...
 
-            event(new Registered($user));
-            $this->guard()->login($user);
+        // Proceed with user registration
+        $user = $this->create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'chat_id' => $serializedChatIdData,
+        ]);
 
-            return redirect()->route('email_verify_form')
-                ->with('success', 'Please check your email for a verification code.')
-                ->with('resendVerification', true);
+        Auth::login($user);
+        // Handle the rest of the registration process...
 
-        }
+        return redirect()->route('email_verify_form')->with('success', 'Please check your email for a verification code.')->with('resendVerification', true);
     }
 }

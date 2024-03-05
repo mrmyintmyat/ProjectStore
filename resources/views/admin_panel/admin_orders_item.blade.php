@@ -5,57 +5,74 @@
     use App\Models\User;
     ?>
     <div class="row row-cols-3">
-        <a class="btn rounded-0 btn-white {{ !request()->has('status') || request('status') == 'reviewing' ? 'btn-info text-white' : 'border' }}" href="?status=reviewing">Reviewing</a>
-        <a class="btn rounded-0 btn-white {{ request('status') == 'done' ? 'btn-info text-white' : 'border' }}" href="?status=done">Done</a>
-        <a class="btn rounded-0 btn-white {{ request('status') == 'cancelled' ? 'btn-info text-white' : 'border' }}" href="?status=cancelled">Cancelled</a>
+        <a class="btn rounded-0 btn-white {{ !request()->has('status') || request('status') == 'reviewing' ? 'btn-info text-white' : 'border' }}"
+            href="?status=reviewing">Reviewing</a>
+        <a class="btn rounded-0 btn-white {{ request('status') == 'done' ? 'btn-info text-white' : 'border' }}"
+            href="?status=done">Done</a>
+        <a class="btn rounded-0 btn-white {{ request('status') == 'cancelled' ? 'btn-info text-white' : 'border' }}"
+            href="?status=cancelled">Cancelled</a>
     </div>
     <div class="d-flex">
-    <button class="btn btn-warning text-white w-50 rounded-0" onclick="cancel_order()">Cancel orders</button>
+        <button class="btn btn-warning text-white w-50 rounded-0" onclick="cancel_order()">Cancel orders</button>
         <button class="btn btn-success text-white w-50 rounded-0" onclick="done_order()">Done</button>
     </div>
     <div class="table-responsive">
-    <table class="table table-bordered">
-        {{-- <h2 class="text-primary m-2">Orders (<span id="cart_count">{{ count($orders) }})</span> <button class="btn btn-warning text-white ms-3" onclick="cancel_order()">Cancel orders</button></h2> --}}
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Image</th>
-                <th scope="col">Name</th>
-                {{-- <th scope="col">about</th> --}}
-                <th scope="col">total</th>
-                {{-- <th scope="col">count</th> --}}
-                <th scope="col">Date</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
+        <table class="table table-bordered">
+            {{-- <h2 class="text-primary m-2">Orders (<span id="cart_count">{{ count($orders) }})</span> <button class="btn btn-warning text-white ms-3" onclick="cancel_order()">Cancel orders</button></h2> --}}
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    {{-- <th scope="col">about</th> --}}
+                    <th scope="col">total</th>
+                    {{-- <th scope="col">count</th> --}}
+                    <th scope="col">Date</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Chat Id</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Email</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
 
-            @foreach ($orders as $order)
-                <?php
-                $item = Item::find($order->item_id);
-                $user = $order->user;
-                if (!$user) {
-                    $user_email = $order->user_id;
-                }else{
-                    $user_email = $user->email;
-                }
-                ?>
-                <tr id="{{ $order->id }}">
-                    <th scope="row">{{ $order->id }}</th>
-                    <th scope="row">
-                        <img style="height: 100px; width:auto;" src="/item_img/{{ $item->item_image }}" alt="">
-                    </th>
-                    <th scope="row">{{ $item->title }}</th>
-                    {{-- <th scope="row">{{ $item->about }}</th> --}}
-                    <th scope="row">{{ $order->total }}</th>
-                    {{-- <th scope="row">{{ $order->count }}</th> --}}
-                    <th scope="row">{{ $order->created_at->diffForHumans(null, true) }} <p>{{ $order->created_at }}</p>
-                    </th>
-                    <th scope="row">{{ $order->user_name }}</th>
-                    <th scope="row"><a href="mailto:{{ $user_email }}">{{ $user_email }}</a></th>
-                    {{-- <th class="d-flex">
+                @foreach ($orders as $order)
+                    <?php
+                    $item = Item::find($order->item_id);
+                    $user = $order->user;
+                    if (!$user) {
+                        $user_email = $order->user_id;
+                    } else {
+                        $user_email = $user->email;
+                    }
+                    ?>
+                    <tr id="{{ $order->id }}">
+                        <th scope="row">{{ $order->id }}</th>
+                        <th scope="row">
+                            <img style="height: 100px; width:auto;" src="/storage/item_img/{{ $item->item_image }}" alt="">
+                        </th>
+                        <th scope="row">{{ $item->title }}</th>
+                        {{-- <th scope="row">{{ $item->about }}</th> --}}
+                        <th scope="row">{{ $order->total }}</th>
+                        {{-- <th scope="row">{{ $order->count }}</th> --}}
+                        <th scope="row">{{ $order->created_at->diffForHumans(null, true) }} <p>{{ $order->created_at }}
+                            </p>
+                        </th>
+                        <th scope="row">{{ $order->user_name }}</th>
+                        <th scope="row">
+                            @if ($order->user->chat_id != null)
+                            @php
+                            $chatIdData = json_decode($order->user->chat_id, true); // Decode JSON string into an associative array
+                        @endphp
+                        @foreach ($chatIdData as $key => $value)
+                            <h6>{{ $key }}: {{ $value }}</h6>
+                        @endforeach
+                            @endif
+                        </th>
+                        <th scope="row">{{ $order->note }}</th>
+                        <th scope="row"><a href="mailto:{{ $user_email }}">{{ $user_email }}</a></th>
+                        {{-- <th class="d-flex">
 
 
                         <div class="modal fade" id="staticBackdrop{{ $order->id }}" data-bs-backdrop="static"
@@ -79,15 +96,15 @@
 
                         <a href="{{ url('admin/' . $item->id . '/edit') }}" class="btn btn-success btn-sm">Accept</a>
                     </th> --}}
-                    <th>
-                        <div>
-                            <input type="checkbox" name="orders[]" value="{{ $order->id }}">
-                        </div>
-                    </th>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+                        <th>
+                            <div>
+                                <input type="checkbox" name="orders[]" value="{{ $order->id }}">
+                            </div>
+                        </th>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
     {{ $orders->links('layouts.bootstrap-5') }}
 
@@ -127,7 +144,7 @@
                 }
 
                 axios.post('/admin/cancel_order', {
-                      order_ids: checkedItems
+                        order_ids: checkedItems
                     })
                     .then(function(response) {
                         // Remove the deleted items from the table
@@ -144,7 +161,7 @@
             }
         }
 
-        function done_order(){
+        function done_order() {
             if (confirm("Are you sure?") == true) {
                 var checkedItems = $('input[name="orders[]"]:checked')
                     .map(function() {
@@ -158,7 +175,7 @@
                 }
 
                 axios.post('/admin/done_order', {
-                      order_ids: checkedItems
+                        order_ids: checkedItems
                     })
                     .then(function(response) {
                         // Remove the deleted items from the table
@@ -174,5 +191,5 @@
                     });
             }
         }
-        </script>
+    </script>
 @endsection

@@ -9,7 +9,7 @@
     {{ request()->url() }}
 @endsection
 @section('btn')
-    <section class="pt-lg-3 mt-3 px-2 d-lg-none d-block">
+    <section class="pt-lg-3 my-2 px-2 d-lg-none d-block">
         <article class="">
             <form id="searchForm2" method="post">
                 @csrf
@@ -80,7 +80,7 @@
                                                 <small class="text-muted">
                                                     {{ $item->item_count }} left
                                                 </small>
-                                                <div class="mx-2" style="width: 2px; height: 0.8rem; background: #acaeb0;"></div>
+                                                <div class="mx-2" style="width: 1.5px; height: 0.6rem; background: #acaeb0;"></div>
                                                 <small class="text-muted">
                                                     {{ $item->sales }} sales
                                                 </small>
