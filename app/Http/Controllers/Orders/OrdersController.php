@@ -144,7 +144,7 @@ class OrdersController extends Controller
         try {
         Mail::send([], [], function (Message $message) use ($order, $emailuser) {
             $message
-                ->to('myam6552@gmail.com')
+                ->to('nextpjofficial@gmail.com')
                 ->subject('You have a new order!')
                 ->html(view('auth.mail_style.email-order', ['order' => $order, 'user' => $emailuser])->render(), 'text/html');
         });
@@ -320,7 +320,7 @@ class OrdersController extends Controller
         try {
             Mail::send([], [], function (Message $message) use ($inputData, $request) {
                 $message
-                    ->to('myam6552@gmail.com')
+                    ->to('nextpjofficial@gmail.com')
                     ->subject('You have a new order! From Cart.')
                     ->html(view('auth.mail_style.email-cart-order', ['inputData' => $inputData, 'note' => $request->note])->render(), 'text/html');
             });
