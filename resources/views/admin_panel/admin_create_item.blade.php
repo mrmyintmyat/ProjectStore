@@ -30,7 +30,7 @@
     <div class="col-md-4">
         <label for="validationDefaultUsername" class="form-label">Reduced Price</label>
         <input type="text" name="reduced_price" value="{{old('reduced_price')}}" class="form-control" id="validationDefaultUsername"
-            aria-describedby="inputGroupPrepend2" required>
+            aria-describedby="inputGroupPrepend2">
     </div>
     <div class="col-12">
         <button class="btn btn-primary w-100" type="submit">Create</button>
