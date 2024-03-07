@@ -111,9 +111,7 @@ class AdminController extends Controller
             $destinationPath = 'item-images/';
             $item_img = date('YmdHis') . '.' . $image->getClientOriginalExtension();
 
-            // Store the file in the storage disk
-            Storage::disk('public')->putFileAs($destinationPath, $image, $item_img);
-
+            $imagePath = $request->file('image')->storeAs($destinationPath, $item_img, 'public');
             // Update the image path
             $image = $item_img;
         }
