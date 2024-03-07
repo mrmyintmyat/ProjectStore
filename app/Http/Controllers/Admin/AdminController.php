@@ -107,6 +107,17 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+
+        $validator = Validator::make($request->all(), [
+            // 'image' => 'required',
+            'title' => 'required',
+            'price' => 'required',
+            'about' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Validation failed.');
+        }
         if ($image = $request->file('image')) {
             $destinationPath = 'item-images/';
             $item_img = date('YmdHis') . '.' . $image->getClientOriginalExtension();
@@ -117,18 +128,6 @@ class AdminController extends Controller
             // Update the image path
             $image = $item_img;
         }
-
-        $validator = Validator::make($request->all(), [
-            'image' => 'required',
-            'title' => 'required',
-            'price' => 'required',
-            'about' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->with('error', 'Validation failed.');
-        }
-
         Item::create([
             'item_image' => $image,
             'title' => $request->title,
@@ -137,6 +136,8 @@ class AdminController extends Controller
             'reduced_price' => $request->reduced_price,
             'item_count' => $request->count,
         ]);
+
+
 
         return redirect('/admin/create')->with('success', 'Done');
     }

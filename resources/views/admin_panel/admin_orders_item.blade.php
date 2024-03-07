@@ -50,7 +50,7 @@
                     <tr id="{{ $order->id }}">
                         <th scope="row">{{ $order->id }}</th>
                         <th scope="row">
-                            <img style="height: 100px; width:auto;" src="/storage/item_img/{{ $item->item_image }}" alt="">
+                            <img style="height: 100px; width:auto;" src="/storage/item-images/{{ $item->item_image }}" alt="">
                         </th>
                         <th scope="row">{{ $item->title }}</th>
                         {{-- <th scope="row">{{ $item->about }}</th> --}}

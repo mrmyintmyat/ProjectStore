@@ -188,7 +188,7 @@ echo $str;
                                             <input type="hidden" name="price" value="reduced_price">
                                         @endif
                                         <input type="hidden" class="count" name="count" value="1">
-                                        @if (Auth::check())
+                                        {{-- @if (Auth::check())
                                             <button
                                                 class="btn w-100 rounded-1 fw-semibold  disabled_tag btn-secondary btn p-2">
                                                 <i class="fa-solid me-2 fa-cart-plus"></i> Add to Cart
@@ -198,7 +198,7 @@ echo $str;
                                                 class="btn w-100 rounded-1 fw-semibold  disabled_tag btn-secondary btn p-2">
                                                 <i class="fa-solid me-2 fa-cart-plus"></i> Add to Cart
                                             </a>
-                                        @endif
+                                        @endif --}}
                                     </form>
 
                                     <button type="submit"
@@ -206,7 +206,7 @@ echo $str;
                                         data-bs-toggle="modal" data-bs-target="#order_confirm" {{-- @if (Auth::check()) @if (Auth::user()->email == null || Auth::user()->email_verified_at == null)
                                         disabled @endif
                                     @else disabled @endif --}}>
-                                        <i class="fa-solid me-2 fa-cart-shopping"></i> Order Now
+                                        <i class="fa-solid me-2 fa-cart-shopping"></i> Buy Now
                                     </button>
                                 </div>
                             </div>

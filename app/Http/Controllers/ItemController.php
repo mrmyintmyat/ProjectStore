@@ -56,6 +56,18 @@ class ItemController extends Controller
         return view('carts', compact('carts'));
     }
 
+    public function my_orders(){
+        $carts = null;
+        if (Auth::check()) {
+            $user = Auth::user();
+            $carts = $user->orders()
+                ->latest()
+                ->get();
+        }
+
+        return view('carts', compact('carts'));
+    }
+
     public function cart_delete(Request $request)
     {
         // Retrieve the selected item IDs from the request

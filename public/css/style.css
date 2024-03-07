@@ -40,6 +40,7 @@ body{
 }
 
 #nav{
+    box-shadow: 0 .200rem 1rem rgba(0,0,0,.075)!important;
     /* border-radius: 50px; */
     /* box-shadow: 5px 5px 20px rgba(181, 181, 181, 0.2); */
 }

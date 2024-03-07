@@ -156,7 +156,7 @@
     </div> --}}
     <div class="container-desktop w-100">
         <div class="m-0 p-0">
-            <aside id="nav" class="p-0 shadow-sm d-flex justify-content-center align-items-center fixed-top bg-white ">
+            <aside id="nav" class="p-0 d-flex justify-content-center align-items-center fixed-top bg-white ">
                 <nav class="navbar navbar-expand-lg w-100 d-flex container-lg px-2">
 
                     @if (request()->is('/'))
@@ -190,12 +190,20 @@
                                 </a>
                             </li>
                             @if (Auth::check())
-                            <li class="nav-item ms-2">
+                            {{-- <li class="nav-item ms-2">
                                 <a href="/cart" class="text-decoration-none d-flex align-items-center nav-link py-2  @if (request()->is('cart'))
                                     active
                                     @endif">
                                     <i class="fa-solid fa-cart-shopping" id="nav_icon"></i>
                                     <span class="ms-2">Cart</span>
+                                </a>
+                            </li> --}}
+                            <li class="nav-item ms-2 text-center">
+                                <a href="/my-orders" class="text-decoration-none d-flex align-items-center nav-link py-2  @if (request()->is('profile'))
+                                    active
+                                    @endif">
+                                    <i class="fa-solid fa-user" id="nav_icon"></i>
+                                    <span class="ms-2">My Orders</span>
                                 </a>
                             </li>
                             <li class="nav-item ms-2 text-center">

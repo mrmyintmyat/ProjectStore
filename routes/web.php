@@ -30,8 +30,10 @@ Route::get('/', [ItemController::class, 'index'])->name('items.data');
 Route::get('/notice', [ItemController::class, 'notice'])->middleware('auth');
 
 Route::get('/detail/{id}', [ItemController::class, 'show'])->name('item.detail');
-Route::get('/cart', [ItemController::class, 'cart'])->middleware('auth');
+// Route::get('/cart', [ItemController::class, 'cart'])->middleware('auth');
 Route::post('/cart/delete', [ItemController::class, 'cart_delete'])->middleware('auth');
+
+Route::get('/my-orders', [ItemController::class, 'my_orders'])->middleware('auth');
 
 Route::get('/profile', [ProfileController::class, 'index'])->middleware('auth')->name('profile');
 Route::put('/profile/{id}', [ProfileController::class, 'update'])->middleware('auth');

@@ -192,7 +192,7 @@ class OrdersController extends Controller
             return view('auth.error_page');
         }
 
-        return back()->with('seccess_order', 'We will mail to you.');
+        return back()->with('seccess_order', 'Thanks for choosing. We will contact soon.');
     }
 
     public function show(){
@@ -425,7 +425,7 @@ class OrdersController extends Controller
             $cart = Cart::find($cart_id);
             $cart->delete();
         }
-        return back()->with('seccess_order', 'We will mail to you.');
+        return back()->with('seccess_order', 'Thanks for choosing. We will contact soon.');
     }
     /**
      * Show the form for editing the specified resource.
