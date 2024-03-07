@@ -300,7 +300,7 @@ class AdminController extends Controller
                 continue;
             }
 
-            $existingImagePath = 'item-images/' . $item->item_image;
+            $existingImagePath = '/storage/item-images/' . $item->item_image;
             if (Storage::disk('public')->exists($existingImagePath)) {
                 Storage::disk('public')->delete($existingImagePath);
             } else {
