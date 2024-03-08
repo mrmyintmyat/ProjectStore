@@ -46,7 +46,7 @@ section:nth-child(1) {
     }
 
     section:nth-child(1) {
-        min-height: 80vh;
+        min-height: 85vh;
         padding-top: 1rem;
         padding-bottom: 1rem;
         border-radius: 3.5rem 3.5rem 0rem 0rem;
@@ -54,7 +54,7 @@ section:nth-child(1) {
     }
 
     section:nth-child(2) {
-        min-height: 20vh;
+        min-height: 15vh;
     }
 }
 @media
