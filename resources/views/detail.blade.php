@@ -1,35 +1,41 @@
 @extends('layouts.home')
 @section('title')
-    {{$item->title}}
+    {{ $item->title }}
 @endsection
 @section('description')
-<?php
+    <?php
 
-function htmlToStr($html) {
-    // Create a new DOMDocument
-    $dom = new DOMDocument();
+    function htmlToStr($html)
+    {
+        // Create a new DOMDocument
+        $dom = new DOMDocument();
 
-    // Load the HTML code into the DOMDocument
-    @$dom->loadHTML($html);
+        // Load the HTML code into the DOMDocument
+        @$dom->loadHTML($html);
 
-    // Remove any HTML tags from the content
-    $body = $dom->getElementsByTagName('body')->item(0);
-    $str = $dom->saveHTML($body);
-    $str = preg_replace('#<(.*?)>#', '', $str);
+        // Remove any HTML tags from the content
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $str = $dom->saveHTML($body);
+        $str = preg_replace('#<(.*?)>#', '', $str);
 
-    // Return the string
-    return $str;
-}
+        // Return the string
+        return $str;
+    }
 
-$html = $item->about;
-$str = htmlToStr($html);
-echo $str;
+    $html = $item->about;
+    $str = htmlToStr($html);
+    echo $str;
 
-?>
+    ?>
 @endsection
 @section('web_url')
     {{ request()->url() }}
 @endsection
+<style>
+    #about *{
+        text-decoration: none;
+    }
+</style>
 @section('main')
     <section class="pt-lg-3 pt-2 d-flex align-items-center shadow-sm container-lg">
         <div class="w-100 ">
@@ -40,11 +46,11 @@ echo $str;
                             class="img-zoom-container p-0 col-lg-7 d-flex flex-column justify-content-center align-items-center ">
                             <img id="webimage" class="rounded-3" style="width: 100%; height: auto;"
                                 src="/storage/item-images/{{ $item->item_image }}" alt="">
-                                <div class="card w-100 my-2 border-0">
-                                    <div class="card-body">
-                                            {!! $item->about !!}
-                                    </div>
-                                  </div>
+                            <div class="card w-100 my-2 border-0">
+                                <div id="about" class="card-body text-decoration-none">
+                                    {!! $item->about !!}
+                                </div>
+                            </div>
                         </div>
                         <div id="myresult" class="img-zoom-result d-none"></div>
 
@@ -133,7 +139,8 @@ echo $str;
 
                                         @if (Auth::user()->email_verified_at == null)
                                             <div class="mb-0 d-flex justify-content-end">
-                                                <a onclick="ChangeloadingIcon(event, null)" href="/verify-email?item_id={{ $item->id }}" type="submit"
+                                                <a onclick="ChangeloadingIcon(event, null)"
+                                                    href="/verify-email?item_id={{ $item->id }}" type="submit"
                                                     id="em_verify_btn"
                                                     class="btn btn-sm shadow-sm w-100 border border-warning border-2 text-warning"
                                                     href=""><i
@@ -208,18 +215,23 @@ echo $str;
                                     @else disabled @endif --}}>
                                         <i class="fa-solid me-2 fa-cart-shopping"></i> Buy Now
                                     </button>
-                                    @if (Auth::user()->orders()->where('item_id', '=' ,$item->id)->exists())
+                                    @if (Auth::user()->orders()->where('item_id', $item->id)->where(function ($query) {
+                                                $query->where('status', 'reviewing')->orWhere('status', 'done');
+                                            })->exists())
                                         <p class="mt-2 m-0 text-warning text-muted" style="font-size: 0.9rem;">
-                                            You have already purchased this item. If you want to buy more or need any help for that, please contact to project owner.
+                                            You have already purchased this item. If you want to buy more or need any help
+                                            for that, please contact the project owner.
                                         </p>
                                     @endif
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="my-3 d-flex justify-content-end pe-4">
                         @if (Auth::check())
-                            <form action="{{ route('order.create_order', ['id' => $item->id]) }}" method="POST" id="orderform">
+                            <form action="{{ route('order.create_order', ['id' => $item->id]) }}" method="POST"
+                                id="orderform">
                                 @csrf @method('POST')
                                 @if ($item->reduced_price == null)
                                     <input type="hidden" name="price" value="price">
@@ -269,7 +281,8 @@ echo $str;
 
                                                 @if (Auth::user()->email_verified_at == null)
                                                     <div class="mb-0 d-flex justify-content-end">
-                                                        <a onclick="ChangeloadingIcon(event, null)" href="/verify-email?item_id={{ $item->id }}"
+                                                        <a onclick="ChangeloadingIcon(event, null)"
+                                                            href="/verify-email?item_id={{ $item->id }}"
                                                             type="submit" id="em_verify_btn"
                                                             class="btn btn-sm shadow-sm w-100 border border-warning border-2 text-warning"
                                                             href=""><i
@@ -278,7 +291,8 @@ echo $str;
                                                     </div>
                                                 @endif
                                                 <div class="input-group mb-2">
-                                                    <textarea name="note" class="form-control shadow-sm rounded-3 ps-3 p-2 text-dark" placeholder="note.." name="" id="" cols="30" rows="3"></textarea>
+                                                    <textarea name="note" class="form-control shadow-sm rounded-3 ps-3 p-2 text-dark" placeholder="note.."
+                                                        name="" id="" cols="30" rows="3"></textarea>
                                                 </div>
                                                 <div class="input-group p-0 col shadow-sm rounded-0 mb-0">
                                                     {{-- <span
@@ -372,65 +386,68 @@ echo $str;
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                            </form>
                         @endif
                     </div>
                 </div>
             </div>
             <div class="mx-lg-4">
-            <h2 class="mt-lg-3 px-2">Discount Products</h2>
-            <div id="result" class="d-flex flex-row p-lg-2 g-sm-2 g-1 overflow-auto row-cols-desktop-6">
-                @if (count($reduced_items) === 0)
-                    <div style="height: 10rem"
-                        class="d-flex justify-content-center align-items-center justify-content-md-start ms-md-4 w-100">
-                        <div class="text-center">
-                            <span>
-                                <i class="fa-regular fa-hourglass fa-spin fa-spin-reverse"></i>
-                                <h4>Not Yet</h4>
-                            </span>
-                        </div>
-                    </div>
-                @endif
-                @foreach ($reduced_items as $reduced_item)
-                    @if ($reduced_item->item_count != 0)
-                        <div class="col-sm-4 col-md-3 col-lg-2 col-6  m-2 mb-sm-2 mb-1 border-0 border-light rounded-4">
-                            <a href="{{ url('detail/' . $reduced_item->id) }}" id="card"
-                                class=" h-100 text-decoration-none text-dark" style="max-width: 540px;">
-                                <div class="card h-100 home-card">
-                                    <div class="parent">
-                                        <div class="parent">
-                                            <div style="border-radius: 1rem 1rem 0px 0px; background: url('/storage/item-images/{{ $reduced_item->item_image }}') no-repeat center; background-size: contain; height: 140px;"
-                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop" src=""
-                                                class="card-img-top card_img d-flex justify-content-center align-items-center"
-                                                alt="..."> </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body" id="item_title">
-                                        <h4 class="card-title m-0 mb-sm-1 text-truncate fs-5" style="max-width: 200px;"
-                                            id="title">
-                                            {{ $reduced_item->title }}
-                                        </h4>
-                                        <div class="d-flex flex-wrap align-items-center price_cart">
-                                            @if ($reduced_item->reduced_price == null)
-                                                <h4 class="my-0" style="">{{ $reduced_item->price }}</h4>
-                                            @else
-                                                <h4 class="my-0" id="reduced_price">{{ $reduced_item->reduced_price }}
-                                                </h4>
-                                                <p class="text-decoration-line-through my-0 text-muted">
-                                                    {{ $reduced_item->price }}</p>
-                                            @endif
-                                        </div>
-                                        <p class="card-text">
-                                            <small class="text-muted">{{ $reduced_item->sales }} sales</small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
+                <h2 class="mt-lg-3 px-2">Discount Products</h2>
+                <div id="result" class="d-flex flex-row p-lg-2 g-sm-2 g-1 overflow-auto row-cols-desktop-6">
+                    @if (count($reduced_items) === 0)
+                        <div style="height: 10rem"
+                            class="d-flex justify-content-center align-items-center justify-content-md-start ms-md-4 w-100">
+                            <div class="text-center">
+                                <span>
+                                    <i class="fa-regular fa-hourglass fa-spin fa-spin-reverse"></i>
+                                    <h4>Not Yet</h4>
+                                </span>
+                            </div>
                         </div>
                     @endif
-                @endforeach
+                    @foreach ($reduced_items as $reduced_item)
+                        @if ($reduced_item->item_count != 0)
+                            <div
+                                class="col-sm-4 col-md-3 col-lg-2 col-6  m-2 mb-sm-2 mb-1 border-0 border-light rounded-4">
+                                <a href="{{ url('detail/' . $reduced_item->id) }}" id="card"
+                                    class=" h-100 text-decoration-none text-dark" style="max-width: 540px;">
+                                    <div class="card h-100 home-card">
+                                        <div class="parent">
+                                            <div class="parent">
+                                                <div style="border-radius: 1rem 1rem 0px 0px; background: url('/storage/item-images/{{ $reduced_item->item_image }}') no-repeat center; background-size: contain; height: 140px;"
+                                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                                    src=""
+                                                    class="card-img-top card_img d-flex justify-content-center align-items-center"
+                                                    alt="..."> </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body" id="item_title">
+                                            <h4 class="card-title m-0 mb-sm-1 text-truncate fs-5"
+                                                style="max-width: 200px;" id="title">
+                                                {{ $reduced_item->title }}
+                                            </h4>
+                                            <div class="d-flex flex-wrap align-items-center price_cart">
+                                                @if ($reduced_item->reduced_price == null)
+                                                    <h4 class="my-0" style="">{{ $reduced_item->price }}</h4>
+                                                @else
+                                                    <h4 class="my-0" id="reduced_price">
+                                                        {{ $reduced_item->reduced_price }}
+                                                    </h4>
+                                                    <p class="text-decoration-line-through my-0 text-muted">
+                                                        {{ $reduced_item->price }}</p>
+                                                @endif
+                                            </div>
+                                            <p class="card-text">
+                                                <small class="text-muted">{{ $reduced_item->sales }} sales</small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
             </div>
-        </div>
         </div>
         </div>
     </section>
