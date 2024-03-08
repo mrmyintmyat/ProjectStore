@@ -41,9 +41,9 @@
                 </section>
                 <section class="col-md-5 d-flex justify-content-center align-items-center">
                     <div class="d-flex flex-column justify-content-center align-items-center">
-                        <h3 class="fw-bold text-white d-none d-lg-block fs-4">Welcome to</h3>
-                        <h4 class="text-white fw-bold fs-1">NextPj</h4>
-                        <p class="mt-5 text-center fw-semibold w-75 text-white d-md-block d-none w-100 fs-5">Find your next project here!</p>
+                        <h3 class="fw-bold text-white d-none d-lg-block">Welcome to</h3>
+                        <h4 class="text-white fw-bold fs-1 d-md-block d-none">NextPj</h4>
+                        <p class="mt-md-5 m-0 text-center fw-semibold w-75 text-white w-100 fs-5">Find your next project here!</p>
                     </div>
                 </section>
             </div>
