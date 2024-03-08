@@ -199,10 +199,10 @@
                                 </a>
                             </li> --}}
                             <li class="nav-item ms-2 text-center">
-                                <a href="/my-orders" class="text-decoration-none d-flex align-items-center nav-link py-2  @if (request()->is('profile'))
+                                <a href="/my-orders" class="text-decoration-none d-flex align-items-center nav-link py-2  @if (request()->is('my-orders'))
                                     active
                                     @endif">
-                                    <i class="fa-solid fa-user" id="nav_icon"></i>
+                                    <i class="fa-solid fa-basket-shopping" id="nav_icon"></i>
                                     <span class="ms-2">My Orders</span>
                                 </a>
                             </li>

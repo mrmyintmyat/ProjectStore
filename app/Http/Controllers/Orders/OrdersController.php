@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers\Orders;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Cart;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Order;
-use App\Models\Cart;
 use App\Models\Notice;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Auth;
+use App\Mail\OrderUserMail;
+use App\Mail\OrderAdminMail;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
+use App\Http\Controllers\Controller;
 // use Symfony\Component\Mailer\Transport;
 // use Symfony\Component\Mailer\Mailer;
 // use Symfony\Component\Mime\Email;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Request as RequestFacade;
 
 class OrdersController extends Controller
 {
@@ -63,7 +66,7 @@ class OrdersController extends Controller
         $item = Item::find($id);
         $user = Auth::user();
 
-        if ($user->email_verified_at == null){
+        if ($user->email_verified_at == null) {
             return redirect()->route('email_verify_form', ['item_id' => $id]);
         }
         $carts = Cart::where('item_id', $id)->get();
@@ -105,7 +108,7 @@ class OrdersController extends Controller
         } else {
             return back()->with('cart_item_left', 'Something went wrong.Please Contact us!');
         }
-        $item_count = $item->item_count;// - $count
+        $item_count = $item->item_count; // - $count
         $item->item_count = $item_count;
         $item->update();
 
@@ -130,7 +133,12 @@ class OrdersController extends Controller
             $order->status = 'reviewing';
             $order->save();
         } else {
+            $maxOrderId = Order::max('id');
+
+            // Determine the new order ID
+            $newOrderId = max(56720, $maxOrderId + 1);
             $order = Order::create([
+                'id' => $newOrderId,
                 'user_id' => $user_id,
                 'user_name' => $user_name,
                 'item_id' => $item->id,
@@ -142,25 +150,40 @@ class OrdersController extends Controller
         }
 
         try {
-        Mail::send([], [], function (Message $message) use ($order, $emailuser) {
-            $message
-                ->to('nextpjofficial@gmail.com')
-                ->subject('You have a new order!')
-                ->html(view('auth.mail_style.email-order', ['order' => $order, 'user' => $emailuser])->render(), 'text/html');
-        });
+            // Mail::send([], [], function (Message $message) use ($order, $emailuser) {
+            //     $message
+            //         ->to('nextpjofficial@gmail.com')
+            //         ->subject('You have a new order!')
+            //         ->html(view('auth.mail_style.email-order', ['order' => $order, 'user' => $emailuser])->render(), 'text/html');
+            // });
 
-        foreach ($carts as $cart) {
-            // if ($item_count <= $cart->count) {
-            //     $cart->count = $item_count;
-            //     $total = intval($price) * intval($cart->count) . $currency_symbol;
-            //     $cart->total = $total;
-            // }
-            // $cart->update();
-            if ($item_count == 0) {
-                $cart->delete();
+            Mail::to('nextpjofficial@gmail.com')->send(new OrderAdminMail($order, $emailuser));
+            Mail::to($user->email)->send(new OrderUserMail($order, $emailuser));
+
+            // $user->notify(
+            //     (new MailMessage())
+            //         ->subject('You have a new order!')
+            //         ->markdown('auth.mail_style.email-order', ['order' => $order, 'user' => $emailuser]),
+            // );
+
+            // Mail::send([], [], function (Message $message) use ($order, $emailuser) {
+            //     $message
+            //         ->to($emailuser->email)
+            //         ->subject('You have a new order!')
+            //         ->html(view('auth.mail_style.order-mail-to-user', ['order' => $order, 'user' => $emailuser])->render(), 'text/html');
+            // });
+
+            foreach ($carts as $cart) {
+                // if ($item_count <= $cart->count) {
+                //     $cart->count = $item_count;
+                //     $total = intval($price) * intval($cart->count) . $currency_symbol;
+                //     $cart->total = $total;
+                // }
+                // $cart->update();
+                if ($item_count == 0) {
+                    $cart->delete();
+                }
             }
-        }
-
         } catch (\Exception $e) {
             $item_count = $item->item_count; // + $count
             $item->item_count = $item_count;
@@ -195,17 +218,17 @@ class OrdersController extends Controller
         return back()->with('seccess_order', 'Thanks for choosing. We will contact soon.');
     }
 
-    public function show(){
-
+    public function show()
+    {
     }
 
     public function create_order_cart(Request $request)
     {
         $inputData = [];
 
-         $user = Auth::user();
+        $user = Auth::user();
 
-        if ($user->email_verified_at == null){
+        if ($user->email_verified_at == null) {
             return redirect()->route('email_verify_form', ['cart' => 'cart']);
         }
         // foreach ($request->input() as $key => $value) {
@@ -376,7 +399,7 @@ class OrdersController extends Controller
                     return back()->with('cart_item_left', 'Something went wrong.PLease Contact us!');
                 }
 
-                $item_count = $item->item_count;//+ $count
+                $item_count = $item->item_count; //+ $count
                 $item->item_count = $item_count;
                 $item->update();
 
@@ -397,7 +420,7 @@ class OrdersController extends Controller
                     // $order_2->update();
 
                     // if ($cartcount_total == 0) {
-                        // $order_2->delete();
+                    // $order_2->delete();
                     // }
                     $order_2->delete();
                 }
@@ -460,26 +483,29 @@ class OrdersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        try {
-            $order = Order::findOrFail($id);
-            if (!$order) {
-                return back();
+        // try {
+            $selectorders = $request->input('item_data');
+
+            // Perform the deletion logic
+            foreach ($selectorders as $title => $item) {
+                if (!isset($item['id'])) {
+                    continue;
+                }
+                $id = $item['id'];
+                $order = Order::findOrFail($id);
+
+                if ($order) {
+                    $order->status = 'cancelled';
+                    $order->update();
+                } else {
+                    continue;
+                }
             }
-
-            $order->status = 'cancelled';
-            $order->update();
-            // $item = Item::find($order->item_id);
-            // $item_count = $item->item_count + $order->count;
-            // $item->item_count = $item_count;
-
-            // $item->update();
-            // $order->delete();
-
             return back()->with('success', 'Done');
-        } catch (\Exception $e) {
-            return view('auth.error_page');
-        }
+        // } catch (\Exception $e) {
+        //     return view('auth.error_page');
+        // }
     }
 }

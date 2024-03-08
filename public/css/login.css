@@ -14,6 +14,7 @@ main {
     height: auto;
     border-radius: 3rem;
     max-width: 70rem;
+    min-height: 80vh;
 }
 
 section:nth-child(1) {
@@ -26,6 +27,14 @@ section:nth-child(1) {
     /* Adjust the shadow properties as needed */
 }
 
+@media (min-width: 767px) and (min-width: 900px) {
+    #main {
+    /* min-height: auto; */
+      /* max-height: 20rem; */
+    }
+  }
+
+
 @media(max-width: 767px) {
     body {
         overflow: auto;
@@ -37,7 +46,7 @@ section:nth-child(1) {
     }
 
     section:nth-child(1) {
-        min-height: 65vh;
+        min-height: 80vh;
         padding-top: 1rem;
         padding-bottom: 1rem;
         border-radius: 3.5rem 3.5rem 0rem 0rem;
@@ -45,7 +54,7 @@ section:nth-child(1) {
     }
 
     section:nth-child(2) {
-        min-height: 30vh;
+        min-height: 20vh;
     }
 }
 @media

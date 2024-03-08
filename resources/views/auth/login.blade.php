@@ -74,15 +74,8 @@
                 <section class="col-md-5 d-flex justify-content-center align-items-center">
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <h3 class="fw-bold text-white d-none d-lg-block">Welcome to</h3>
-                        <div class="rounded-circle" style="height: 6rem;">
-                            <img class="w-100 h-100 rounded-circle"
-                                src="https://play-lh.googleusercontent.com/uqq6a-fHayQxsNQkxB9ZZXag8N7Du5mOEKcScr9yltHqx3RKgCdr9VJHKGO2vY_GUe0"
-                                alt="">
-                        </div>
-                        <h4 class="text-white fw-bold">NextPj</h4>
-                        <p class="mt-5 text-center fw-semibold w-75 text-white d-md-block d-none">Lorem ipsum dolor sit amet
-                            consectetur
-                            adipisicing elit. Molestias commodi consequatur sapiente necessitatibus corporis dolor exc!</p>
+                        <h4 class="text-white fw-bold fs-1">NextPj</h4>
+                        <p class="mt-5 text-center fw-semibold w-75 text-white d-md-block d-none w-100 fs-5">Find your next project here!</p>
                     </div>
                 </section>
             </div>

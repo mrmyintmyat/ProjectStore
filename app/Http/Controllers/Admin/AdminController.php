@@ -83,6 +83,28 @@ class AdminController extends Controller
             ],
         ];
 
+        $userChartData = User::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as count')
+            ->where('created_at', '>=', Carbon::now()->subMonths(6))
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // Prepare data for the chart
+        $labels = $userChartData->pluck('month')->toArray();
+        $counts = $userChartData->pluck('count')->toArray();
+
+        $userChart = [
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Monthly Account Creations',
+                    'data' => $counts,
+                    'backgroundColor' => 'rgba(54, 162, 235, 0.5)',
+                    'borderColor' => 'rgba(54, 162, 235, 1)',
+                    'borderWidth' => 1
+                ]
+            ]
+        ];
         // foreach ($items as $item) {
         //     $order = Order::where('item_id', $item->id)->first();
 
@@ -96,7 +118,7 @@ class AdminController extends Controller
         //         $notice->delete();
         //     }
         // }
-        return view('admin_panel.admin_home', compact('chartData'));
+        return view('admin_panel.admin_home', compact('chartData', 'userChart'));
     }
 
     public function create()

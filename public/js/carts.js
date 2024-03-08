@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     $("#reverseCheck1").change(function() {
         let isChecked = $(this).is(":checked");
         let check_input = $(".form-check-input:not(#reverseCheck1)");

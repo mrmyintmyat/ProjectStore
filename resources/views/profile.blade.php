@@ -2,7 +2,7 @@
 use App\Models\Item;
 use App\Models\Order;
 $orders = Order::where('user_id', Auth::user()->id)->latest()->paginate(10);
-$items = Item::paginate(7);
+$items = Item::inRandomOrder()->take(5)->get();
 ?>
 @extends('layouts.home')
 @section('alert')

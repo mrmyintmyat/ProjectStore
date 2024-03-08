@@ -20,9 +20,7 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
-        $items = Item::where('item_count', '!=', 0)
-            ->latest()
-            ->paginate(28);
+        $items = Item::where('item_count', '!=', 0)->latest()->paginate(28);
         // $discount_items = Item::where('item_count', '!=', 0)
         // ->whereNotNull('reduced_price')
         // ->get();
@@ -42,9 +40,7 @@ class ItemController extends Controller
         $carts = null;
         if (Auth::check()) {
             $user = Auth::user();
-            $carts = $user->carts()
-                ->latest()
-                ->get();
+            $carts = $user->carts()->latest()->get();
         }
 
         foreach ($carts as $cart) {
@@ -56,37 +52,37 @@ class ItemController extends Controller
         return view('carts', compact('carts'));
     }
 
-    public function my_orders(){
-        $carts = null;
+    public function my_orders()
+    {
+        $orders = null;
         if (Auth::check()) {
             $user = Auth::user();
-            $carts = $user->orders()
-                ->latest()
-                ->get();
+            $orders = $user->orders()->latest()->paginate(5);
+            $orders_count = $user->orders()->latest()->get();
         }
 
-        return view('carts', compact('carts'));
+        return view('my-orders', compact('orders', 'orders_count'));
     }
 
     public function cart_delete(Request $request)
     {
         // Retrieve the selected item IDs from the request
-        $selectedItems = $request->input('item_data');
+        // $selectedItems = $request->input('item_data');
 
-        // Perform the deletion logic
-        foreach ($selectedItems as $title => $item) {
-            if (!isset($item['id'])) {
-                continue;
-            }
-            $itemId = $item['id'];
-            $cart = Cart::where('item_id', $itemId)->first();
+        // // Perform the deletion logic
+        // foreach ($selectedItems as $title => $item) {
+        //     if (!isset($item['id'])) {
+        //         continue;
+        //     }
+        //     $itemId = $item['id'];
+        //     $cart = Cart::where('item_id', $itemId)->first();
 
-            if ($cart) {
-                $cart->delete();
-            } else {
-                continue;
-            }
-        }
+        //     if ($cart) {
+        //         $cart->delete();
+        //     } else {
+        //         continue;
+        //     }
+        // }
         return back()->with('success', 'Done');
     }
 
@@ -94,9 +90,7 @@ class ItemController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-            $notices = $user->notices()
-                ->latest()
-                ->paginate(10);
+            $notices = $user->notices()->latest()->paginate(10);
             $expirationDate = Carbon::now()->addDays(1);
             foreach ($notices as $notice) {
                 $notice->is_checked = 1;
@@ -159,7 +153,7 @@ class ItemController extends Controller
         if (preg_match($pattern, $item_price, $matches)) {
             $currency_symbol = $matches[0];
             $total = intval($price) * intval($count) . $currency_symbol;
-        } else{
+        } else {
             return back()->with('cart_item_left', 'Something went wrong.PLease Contact us!');
         }
 
@@ -224,35 +218,33 @@ class ItemController extends Controller
     public function show(string $id)
     {
         $item = Item::findOrfail($id);
-        $reduced_items = Item::where('item_count', '!=', 0)
-            ->whereNotNull('reduced_price')
-            ->paginate(6);
+        $reduced_items = Item::where('item_count', '!=', 0)->whereNotNull('reduced_price')->paginate(6);
         if (!$item) {
             $item = (object) [
-                "id" => 16,
-                "title" => "Item Not Found Or",
-                "about" => "Sold Out!",
-                "price" => "MMK0",
-                "reduced_price" => null,
-                "item_image" => "notfound.avif",
-                "item_count" => "0",
-                "created_at" => "2023-06-21T05:25:01.000000Z",
-                "updated_at" => "2023-06-21T05:25:01.000000Z"
+                'id' => 16,
+                'title' => 'Item Not Found Or',
+                'about' => 'Sold Out!',
+                'price' => 'MMK0',
+                'reduced_price' => null,
+                'item_image' => 'notfound.avif',
+                'item_count' => '0',
+                'created_at' => '2023-06-21T05:25:01.000000Z',
+                'updated_at' => '2023-06-21T05:25:01.000000Z',
             ];
             return view('detail', compact('item', 'reduced_items'));
         }
 
         if ($item->item_count == 0) {
             $item = (object) [
-                "id" => 16,
-                "title" => "Sold out!",
-                "about" => "Sold out!",
-                "price" => "MMK0",
-                "reduced_price" => null,
-                "item_image" => "soldout.png",
-                "item_count" => "0",
-                "created_at" => "2023-06-21T05:25:01.000000Z",
-                "updated_at" => "2023-06-21T05:25:01.000000Z"
+                'id' => 16,
+                'title' => 'Sold out!',
+                'about' => 'Sold out!',
+                'price' => 'MMK0',
+                'reduced_price' => null,
+                'item_image' => 'soldout.png',
+                'item_count' => '0',
+                'created_at' => '2023-06-21T05:25:01.000000Z',
+                'updated_at' => '2023-06-21T05:25:01.000000Z',
             ];
             return view('detail', compact('item', 'reduced_items'));
         }

@@ -10,7 +10,7 @@ use App\Models\User;
             <a href="/admin/orders" class="col text-decoration-none text-dark">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h3>{{ count(Order::where("status", '=', 'reviewing')->get()) }}</h3>
+                        <h3>{{ count(Order::where('status', '=', 'reviewing')->get()) }}</h3>
                         <span class="text-secondary">
                             <i class="fa-solid fa-basket-shopping"></i>
                             Reviewing Orders
@@ -41,8 +41,13 @@ use App\Models\User;
                 </div>
             </a>
         </div>
-        <div class="col-md-6 col-12">
-            <canvas class="w-100" id="orderChart" height="300"></canvas>
+        <div class="row">
+            <div class="col-md-6 col-12">
+                <canvas class="w-100" id="orderChart" height="300"></canvas>
+            </div>
+            <div class="col-md-6 col-12">
+                <canvas class="w-100" id="userChart" height="300"></canvas>
+            </div>
         </div>
     </div>
 @endsection
@@ -60,6 +65,24 @@ use App\Models\User;
             data: {
                 labels: labels,
                 datasets: datasets
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var ctx2 = document.getElementById('userChart').getContext('2d');
+        var userChartData = @json($userChart);
+
+        var userChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: userChartData.labels,
+                datasets: userChartData.datasets
             },
             options: {
                 scales: {

@@ -40,6 +40,7 @@
                 @foreach ($orders as $order)
                     <?php
                     $item = Item::find($order->item_id);
+
                     $user = $order->user;
                     if (!$user) {
                         $user_email = $order->user_id;
@@ -48,31 +49,39 @@
                     }
                     ?>
                     <tr id="{{ $order->id }}">
-                        <th scope="row">{{ $order->id }}</th>
-                        <th scope="row">
-                            <img style="height: 100px; width:auto;" src="/storage/item-images/{{ $item->item_image }}" alt="">
+                        <th scope="row">{{ $order->id }}
                         </th>
-                        <th scope="row">{{ $item->title }}</th>
-                        {{-- <th scope="row">{{ $item->about }}</th> --}}
-                        <th scope="row">{{ $order->total }}</th>
-                        {{-- <th scope="row">{{ $order->count }}</th> --}}
-                        <th scope="row">{{ $order->created_at->diffForHumans(null, true) }} <p>{{ $order->created_at }}
-                            </p>
-                        </th>
-                        <th scope="row">{{ $order->user_name }}</th>
-                        <th scope="row">
-                            @if ($order->user->chat_id != null)
-                            @php
+                        @if ($item)
+                        <td scope="row">
+                            <img style="height: 100px; width:auto;" src="/storage/item-images/{{ $item->item_image }}"
+                                alt="">
+                        </td>
+                        <td scope="row">{{ $item->title }}</td>
+                @else
+                    <td scope="row">
+                        <img style="height: 100px; width:auto;" src="" alt="item deleted">
+                    </td>
+                    <td scope="row">item deleted</td>
+                @endif
+                <th scope="row">{{ $order->total }}</th>
+                {{-- <th scope="row">{{ $order->count }}</th> --}}
+                <th scope="row">{{ $order->created_at->diffForHumans(null, true) }} <p>{{ $order->created_at }}
+                    </p>
+                </th>
+                <th scope="row">{{ $order->user_name }}</th>
+                <th scope="row">
+                    @if ($order->user->chat_id != null)
+                        @php
                             $chatIdData = json_decode($order->user->chat_id, true); // Decode JSON string into an associative array
                         @endphp
                         @foreach ($chatIdData as $key => $value)
                             <h6>{{ $key }}: {{ $value }}</h6>
                         @endforeach
-                            @endif
-                        </th>
-                        <th scope="row">{{ $order->note }}</th>
-                        <th scope="row"><a href="mailto:{{ $user_email }}">{{ $user_email }}</a></th>
-                        {{-- <th class="d-flex">
+                    @endif
+                </th>
+                <th scope="row">{{ $order->note }}</th>
+                <th scope="row"><a href="mailto:{{ $user_email }}">{{ $user_email }}</a></th>
+                {{-- <th class="d-flex">
 
 
                         <div class="modal fade" id="staticBackdrop{{ $order->id }}" data-bs-backdrop="static"
@@ -96,12 +105,12 @@
 
                         <a href="{{ url('admin/' . $item->id . '/edit') }}" class="btn btn-success btn-sm">Accept</a>
                     </th> --}}
-                        <th>
-                            <div>
-                                <input type="checkbox" name="orders[]" value="{{ $order->id }}">
-                            </div>
-                        </th>
-                    </tr>
+                <th>
+                    <div>
+                        <input type="checkbox" name="orders[]" value="{{ $order->id }}">
+                    </div>
+                </th>
+                </tr>
                 @endforeach
             </tbody>
         </table>
