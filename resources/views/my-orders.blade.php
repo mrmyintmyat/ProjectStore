@@ -126,9 +126,11 @@ use App\Models\Item;
                                     <div class="col-md-1 col-2 d-flex justify-content-center align-items-center">
                                         <div class="form-check d-flex justify-content-center align-items-center p-0">
                                             <div class="dropdown">
+                                                @if ($cart->status == 'reviewing')
                                                 <button class="btn btn-white dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fas fa-ellipsis-h"></i>
                                                 </button>
+                                                @endif
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <li>
                                                         <button type="button" class="dropdown-item btn btn-sm btn-primary rounded-0 w-100"

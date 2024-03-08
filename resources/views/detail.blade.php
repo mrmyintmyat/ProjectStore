@@ -208,6 +208,11 @@ echo $str;
                                     @else disabled @endif --}}>
                                         <i class="fa-solid me-2 fa-cart-shopping"></i> Buy Now
                                     </button>
+                                    @if (Auth::user()->orders()->where('item_id', '=' ,$item->id)->exists())
+                                        <p class="mt-2 m-0 text-warning text-muted" style="font-size: 0.9rem;">
+                                            You have already purchased this item. If you want to buy more or need any help for that, please contact to project owner.
+                                        </p>
+                                    @endif
                                 </div>
                             </div>
                         </div>

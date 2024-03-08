@@ -4,7 +4,9 @@ var nameinput = document.getElementById('name-input');
 var btn_mt = document.getElementById('btn_mt');
 var post_edit = document.getElementById('post_edit');
 var pf_form = document.getElementById('pf_form');
+var chat_id_name = document.getElementById('chat_id_name');
 var user_id = document.getElementById('user_id').value;
+var inputTags = document.getElementsByTagName('input');
 
 if (editprofile && emailInput) {
     editprofile.addEventListener('click', function() {
@@ -16,8 +18,11 @@ if (editprofile && emailInput) {
     methodInput.setAttribute('name', '_method');
     methodInput.setAttribute('value', 'PUT');
     pf_form.appendChild(methodInput);
-    emailInput.disabled = !emailInput.disabled;
-    nameinput.disabled = !nameinput.disabled;
+
+    for (var i = 0; i < inputTags.length; i++) {
+        inputTags[i].disabled = false;
+    }
+    chat_id_name.disabled = false;
     nameinput.focus();
   });
 }

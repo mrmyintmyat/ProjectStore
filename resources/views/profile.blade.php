@@ -1,36 +1,15 @@
 <?php
 use App\Models\Item;
 use App\Models\Order;
-$orders = Order::where('user_id', Auth::user()->id)->latest()->paginate(10);
+$orders = Order::where('user_id', Auth::user()->id)
+    ->latest()
+    ->paginate(10);
 $items = Item::inRandomOrder()->take(5)->get();
 ?>
 @extends('layouts.home')
-@section('alert')
-    @if (session('status'))
-        <div aria-live="polite" aria-atomic="true" class="position-relative">
-            <!-- Position it: -->
-            <!-- - `.toast-container` for spacing between toasts -->
-            <!-- - `top-0` & `end-0` to position the toasts in the upper right corner -->
-            <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
-            <div class="toast-container top-0 end-0 p-3">
 
-                <!-- Then put toasts within -->
-                <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-aos="fade-left">
-                    <div class="toast-header">
-                        <i class="fa-solid fa-circle-check rounded me-2" style="color: #13C39C;"></i>
-                        <strong class="me-auto">Success</strong>
-                        <small class="text-muted">just now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        {{ session('status') }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-@endsection
 @section('main')
+
     <section class="mb-3 container-lg">
         <div class="shadow-sm p-lg-3 h-100 px-2">
             <h3 class="my-3 text-center">My Profile</h3>
@@ -71,6 +50,31 @@ $items = Item::inRandomOrder()->take(5)->get();
                                 </div>
                             @endif
                         </div>
+                        @if (Auth::user()->chat_id)
+                            @php
+                                $chatIds = json_decode(Auth::user()->chat_id, true);
+                            @endphp
+                            @foreach ($chatIds as $name => $id)
+                                <div class="col">
+                                    <div class="input-group p-0 shadow-sm rounded-0 mb-2">
+                                        <select id="chat_id_name" class="input-group-addon" name="select_chat_id"
+                                            id="select_chat_id" disabled required>
+                                            <option value="messenger" {{ $name == 'messenger' ? 'selected' : '' }}>Messenger
+                                            </option>
+                                            <option value="telegram" {{ $name == 'telegram' ? 'selected' : '' }}>Telegram
+                                            </option>
+                                            <option value="skype" {{ $name == 'skype' ? 'selected' : '' }}>Skype</option>
+                                            <option value="whatsapp" {{ $name == 'whatsapp' ? 'selected' : '' }}>Whatsapp
+                                            </option>
+                                            <option value="viber" {{ $name == 'viber' ? 'selected' : '' }}>Viber</option>
+                                        </select>
+                                        <input id="name-input" type="text" value="{{ $id }}"
+                                            class="form-control bg-white rounded-0" name="chat_id"
+                                            disabled required>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                         <div id="btn_mt">
                             <button type="button" class="btn btn-info text-white rounded-0" id="edit-profile">Edit
                                 Profile</button>
@@ -85,9 +89,9 @@ $items = Item::inRandomOrder()->take(5)->get();
                     </div>
                 </form>
             </section>
-            <h3 class="m-2">My Orders</h3>
+            {{-- <h3 class="m-2">My Orders</h3>
 
-            <div id="result" class="d-flex flex-row g-sm-2 g-1 overflow-auto scroll_style p-0">
+             <div id="result" class="d-flex flex-row g-sm-2 g-1 overflow-auto scroll_style p-0">
                 @if (count($orders) === 0)
                     <div style="height: 10rem" class="d-flex justify-content-center align-items-center w-100">
                         <div class="text-center">
@@ -107,8 +111,6 @@ $items = Item::inRandomOrder()->take(5)->get();
                         <div id="card" class="card border-0 border-light shadow-sm h-100 border">
                             <div class="parent">
                                 <a class="parent">
-                                    {{-- <div style="border-radius: 1rem 1rem 0px 0px; background: url('/item-images/{{ $item->item_image }}') no-repeat center; background-size: contain; height: 120px;"
-                                    class="card-img-top card_img d-flex justify-content-center align-items-center"> </div> --}}
                                     <img class="card-img-top card_img" src="/storage/item-images/{{ $item->item_image }}"
                                         alt="">
                                 </a>
@@ -124,15 +126,6 @@ $items = Item::inRandomOrder()->take(5)->get();
                                             class="fw-semibold col-lg-9 col-8 form-control bg-white rounded-0"
                                             name="name" disabled="" required="">
                                     </div>
-                                    {{-- <div class="input-group p-0 shadow-sm rounded-0">
-                                    <span
-                                        class="fw-semibold col-lg-3 col-4 input-group-addon border d-flex align-items-center justify-content-center p-1">
-                                        Count
-                                    </span>
-                                    <input id="name-input" type="text" value="{{ $order->count }}"
-                                        class="fw-semibold col-lg-9 col-8 form-control bg-white rounded-0" name="name"
-                                        disabled="" required="">
-                                </div> --}}
                                     <div class="input-group p-0 shadow-sm rounded-0">
                                         <span
                                             class="fw-semibold col-lg-3 col-4 input-group-addon border d-flex align-items-center justify-content-center p-1">
@@ -177,8 +170,8 @@ $items = Item::inRandomOrder()->take(5)->get();
                         </div>
                     </div>
                 @endforeach
-            </div>
-            <h2 class="m-2">For you</h2>
+            </div> --}}
+            <h2 class="m-2 mt-5">For you</h2>
             <div id="result" class="d-flex flex-row p-0 g-sm-2 g-1 overflow-auto row-cols-desktop-6">
                 @if (count($items) === 0)
                     <div style="height: 10rem" class="d-flex justify-content-center align-items-center w-100">
@@ -202,8 +195,8 @@ $items = Item::inRandomOrder()->take(5)->get();
                                     data-bs-toggle="modal" data-bs-target="#staticBackdrop" src=""
                                     class="card-img-top card_img d-flex justify-content-center align-items-center"
                                     alt="..."> </div> --}}
-                                            <img src="/storage/item-images/{{ $item->item_image }}" class="card-img-top card_img"
-                                                alt="">
+                                            <img src="/storage/item-images/{{ $item->item_image }}"
+                                                class="card-img-top card_img" alt="">
                                         </div>
                                     </div>
                                     <div class="card-body" id="item_title">
@@ -236,5 +229,5 @@ $items = Item::inRandomOrder()->take(5)->get();
     </section>
 @endsection
 @section('script')
-    <script src="/js/profile.js"></script>
+    <script src="/js/profile.js?v=<?php echo time(); ?>"></script>
 @endsection
