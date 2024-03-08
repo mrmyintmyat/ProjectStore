@@ -157,8 +157,6 @@ class AdminController extends Controller
             'item_count' => $request->count,
         ]);
 
-
-
         return redirect('/admin/create')->with('success', 'Done');
     }
 

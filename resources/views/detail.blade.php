@@ -110,13 +110,13 @@
                                     </div>
                                 </div>
                                 @if (Auth::check())
-                                    <form>
+                                    <form class="m-0">
                                         @error('email')
                                             <span class="text-danger" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                        <div class="input-group shadow-sm mb-2 border rounded-0"
+                                        <div class="input-group shadow-sm border rounded-0"
                                             style="border-right: none;">
                                             <span class="input-group-addon border">
                                                 <i class="fa-solid fa-envelope"></i>
@@ -186,7 +186,7 @@
                                     </a>
                                 @endif
                                 <div class="d-flex flex-column justify-content-center mt-2">
-                                    <form action="{{ url('/create') }}" method="post" class="col-12">
+                                    <form action="{{ url('/create') }}" method="post" class="col-12 d-none">
                                         @csrf @method('GET')
                                         <input type="hidden" name="item_id" value="{{ $item->id }}">
                                         @if ($item->reduced_price == null)
@@ -208,7 +208,13 @@
                                         @endif --}}
                                     </form>
 
-                                    <button type="submit"
+                                    <button
+                                    @if (Auth::user()->orders()->where('item_id', $item->id)->where(function ($query) {
+                                        $query->where('status', 'reviewing')->orWhere('status', 'done');
+                                    })->exists())
+                                      disabled
+                                    @endif
+                                    type="submit"
                                         class="btn col-12 rounded-1 fw-semibold  disabled_tag btn-primary btn mt-2 p-2"
                                         data-bs-toggle="modal" data-bs-target="#order_confirm" {{-- @if (Auth::check()) @if (Auth::user()->email == null || Auth::user()->email_verified_at == null)
                                         disabled @endif
