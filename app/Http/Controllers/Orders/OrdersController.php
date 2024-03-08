@@ -485,7 +485,7 @@ class OrdersController extends Controller
      */
     public function destroy(string $id)
     {
-        // try {
+        try {
             $order = Order::findOrFail($id);
             if (!$order) {
                 return back();
@@ -501,8 +501,8 @@ class OrdersController extends Controller
             // $order->delete();
 
             return back()->with('success', 'Done');
-        // } catch (\Exception $e) {
-        //     return view('auth.error_page');
-        // }
+        } catch (\Exception $e) {
+            return view('auth.error_page');
+        }
     }
 }
