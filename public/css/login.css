@@ -45,6 +45,10 @@ section:nth-child(1) {
         border-radius: 0px;
     }
 
+    .loginBox{
+        margin-bottom: 2rem;
+    }
+
     section:nth-child(1) {
         min-height: 85vh;
         padding-top: 1rem;
