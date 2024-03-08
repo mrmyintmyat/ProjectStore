@@ -7,6 +7,13 @@ body{
     overflow-x: hidden;
 }
 
+.dropdown-toggle::after{
+    display: none;
+}
+
+.dropdown-toggle:focus{
+    border: none;
+}
 
 /* Target the scrollbar */
 .main::-webkit-scrollbar {

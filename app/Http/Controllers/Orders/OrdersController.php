@@ -483,26 +483,23 @@ class OrdersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, string $id)
+    public function destroy(string $id)
     {
         // try {
-            $selectorders = $request->input('item_data');
-
-            // Perform the deletion logic
-            foreach ($selectorders as $title => $item) {
-                if (!isset($item['id'])) {
-                    continue;
-                }
-                $id = $item['id'];
-                $order = Order::findOrFail($id);
-
-                if ($order) {
-                    $order->status = 'cancelled';
-                    $order->update();
-                } else {
-                    continue;
-                }
+            $order = Order::findOrFail($id);
+            if (!$order) {
+                return back();
             }
+
+            $order->status = 'cancelled';
+            $order->update();
+            // $item = Item::find($order->item_id);
+            // $item_count = $item->item_count + $order->count;
+            // $item->item_count = $item_count;
+
+            // $item->update();
+            // $order->delete();
+
             return back()->with('success', 'Done');
         // } catch (\Exception $e) {
         //     return view('auth.error_page');

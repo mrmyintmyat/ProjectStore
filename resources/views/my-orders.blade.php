@@ -24,13 +24,14 @@ use App\Models\Item;
 
         <div class="col-lg-8 col-12">
             <div class="row g-2">
-                <div class="card-header shadow-sm p-2 d-flex justify-content-between px-4">
+                {{-- <div class="card-header shadow-sm p-2 d-flex justify-content-between px-4">
                     <div>
                         @if (count($orders) != 0)
                             <div class="card-header p-0 mt-0 d-flex justify-content-between">
                                 <div>
                                     <div class="form-check form-check-reverse">
-                                        <button class="btn btn-white p-0 py-1" onclick="deleteSelectedItems()">Cancel order</button>
+                                        <button class="btn btn-white p-0 py-1" onclick="deleteSelectedItems()">Cancel
+                                            order</button>
                                     </div>
 
                                     <div class="modal fade" id="delete_item" data-bs-backdrop="static"
@@ -63,9 +64,8 @@ use App\Models\Item;
                             </label>
                         </div>
                     </div>
-                </div>
-                <form action="{{ url('orders/0') }}" method="post" class="mt-0 cart_form p-lg-0" id="orderform">
-                    @csrf @method('DELETE')
+                </div> --}}
+                <div class="mt-0 cart_form p-lg-0" id="orderform">
                     @if (count($orders) != 0)
                         @foreach ($orders as $cart)
                             <?php
@@ -96,7 +96,11 @@ use App\Models\Item;
                                                             green;
                                                         @else
                                                             black; @endif">
-                                                            {{ $cart->status }}
+                                                            @if ($cart->status == 'done')
+                                                                Completed
+                                                            @else
+                                                                {{ $cart->status }}
+                                                            @endif
                                                         </small>
                                                     </p>
 
@@ -120,11 +124,42 @@ use App\Models\Item;
                                         </div>
                                     </div>
                                     <div class="col-md-1 col-2 d-flex justify-content-center align-items-center">
-                                        <div class="form-check d-flex justify-content-center">
-                                            @if ($cart->status == 'reviewing')
-                                           <input class="form-check-input" type="checkbox"
-                                                name="item_data[{{ $item->title }}][id]" value="{{ $cart->id }}">
-                                            @endif
+                                        <div class="form-check d-flex justify-content-center align-items-center p-0">
+                                            <div class="dropdown">
+                                                <button class="btn btn-white dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-h"></i>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <li>
+                                                        <button type="button" class="dropdown-item btn btn-sm btn-primary rounded-0 w-100"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#staticBackdrop{{ $cart->id }}">Cancel</button>
+                                                    </li>
+                                                </ul>
+                                                <div class="modal fade" id="staticBackdrop{{ $cart->id }}" data-bs-backdrop="static"
+                                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body pb-1">
+                                                                Are you sure?
+                                                            </div>
+                                                            <div class="modal-footer border-0 p-0 px-2 pb-2">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">No</button>
+                                                                <form action="{{ url('orders/' . $cart->id) }}" method="post">
+                                                                    @csrf @method('DELETE')
+                                                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{-- @if ($cart->status == 'reviewing')
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="item_data[{{ $item->title }}][id]" value="{{ $cart->id }}">
+                                            @endif --}}
                                             <input class="count_input" type="hidden"
                                                 name="item_data[{{ $item->title }}][count]" value="{{ $cart->count }}">
                                             <input type="hidden" name="item_data[{{ $item->title }}][cart_id]"
@@ -137,7 +172,7 @@ use App\Models\Item;
                     @else
                         <h3 class="text-center w-100 py-2">No Orders</h3>
                     @endif
-                </form>
+                        </div>
                 {{ $orders->links('layouts.bootstrap-5') }}
 
             </div>
@@ -147,24 +182,24 @@ use App\Models\Item;
             <div class="card px-3 py-4 rounded-2">
                 <div class="">
                     <div class="input-group p-0 col shadow-sm rounded-0 mb-2">
-                        <span class="input-group-addon col-3 border">
-                            reviewing
+                        <span class="input-group-addon col-4 border">
+                            Reviewing
                         </span>
                         <div class="form-control text-dark rounded-0 total">
                             {{ count($orders_count->where('status', '=', 'reviewing')) }}
                         </div>
                     </div>
                     <div class="input-group p-0 col shadow-sm rounded-0 mb-2">
-                        <span class="input-group-addon col-3 border">
-                            cancelled
+                        <span class="input-group-addon col-4 border">
+                            Cancelled
                         </span>
                         <div class="form-control rounded-0 text-dark count_total">
                             {{ count($orders_count->where('status', '=', 'cancelled')) }}
                         </div>
                     </div>
                     <div class="input-group p-0 col shadow-sm rounded-0 mb-2">
-                        <span class="input-group-addon col-3 border">
-                            done
+                        <span class="input-group-addon col-4 border">
+                            Completed
                         </span>
                         <div class="form-control text-dark rounded-0 total">
                             {{ count($orders_count->where('status', '=', 'done')) }}
@@ -218,9 +253,9 @@ use App\Models\Item;
                 $('#alert_for_select').html('<p class="text-warning m-0">Please select item to cancel.</p>')
             }
         }
-        $(".delete_btn").click(function() {
-            $(".cart_form").submit();
-        });
+        // $(".delete_btn").click(function() {
+        //     $(".cart_form").submit();
+        // });
 
         function ChangeloadingIcon(e, formid) {
             // Prevent the default form submission behavior

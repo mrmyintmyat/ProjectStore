@@ -49,7 +49,7 @@ echo $str;
                         <div id="myresult" class="img-zoom-result d-none"></div>
 
                         <input type="hidden" id="item_count" value="{{ $item->item_count }}">
-                        {{-- <div class="col my-3 clearfix">
+                        <div class="col my-3 clearfix d-none">
                             <div class="d-flex flex-wrap py-2">
                                 <div>
                                     <form name="form_cart">
@@ -86,7 +86,7 @@ echo $str;
                             <p class="card-text mt-1">
                                 <small class="text-muted">{{ $item->item_count }} items left</small>
                             </p>
-                        </div> --}}
+                        </div>
                         <div class="col-lg-4 disabled_tag h-100 p-0 ms-lg-4 px-md-3">
                             <div id="item_title" class="border rounded p-3 pb-4 pt-0">
                                 <div class="d-flex justify-content-between align-items-center w-100 my-3 px-2">
