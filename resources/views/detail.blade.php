@@ -209,21 +209,19 @@
                                     </form>
 
                                     <button
-                                    @if (Auth::user()->orders()->where('item_id', $item->id)->where(function ($query) {
+                                    @if (Auth::check() && Auth::user()->orders()->where('item_id', $item->id)->where(function ($query) {
                                         $query->where('status', 'reviewing')->orWhere('status', 'done');
                                     })->exists())
-                                      disabled
+                                        disabled
                                     @endif
                                     type="submit"
-                                        class="btn col-12 rounded-1 fw-semibold  disabled_tag btn-primary btn mt-2 p-2"
-                                        data-bs-toggle="modal" data-bs-target="#order_confirm" {{-- @if (Auth::check()) @if (Auth::user()->email == null || Auth::user()->email_verified_at == null)
-                                        disabled @endif
-                                    @else disabled @endif --}}>
+                                    class="btn col-12 rounded-1 fw-semibold  disabled_tag btn-primary btn mt-2 p-2"
+                                    data-bs-toggle="modal" data-bs-target="#order_confirm">
                                         <i class="fa-solid me-2 fa-cart-shopping"></i> Buy Now
                                     </button>
-                                    @if (Auth::user()->orders()->where('item_id', $item->id)->where(function ($query) {
-                                                $query->where('status', 'reviewing')->orWhere('status', 'done');
-                                            })->exists())
+                                    @if (Auth::check() && Auth::user()->orders()->where('item_id', $item->id)->where(function ($query) {
+                                        $query->where('status', 'reviewing')->orWhere('status', 'done');
+                                    })->exists())
                                         <p class="mt-2 m-0 text-warning text-muted" style="font-size: 0.9rem;">
                                             You have already purchased this item. If you want to buy more or need any help
                                             for that, please contact the project owner.
