@@ -323,8 +323,6 @@ class AdminController extends Controller
             $existingImagePath = '/item-images/' . $item->item_image;
             if (Storage::disk('public')->exists($existingImagePath)) {
                 Storage::disk('public')->delete($existingImagePath);
-            } else {
-                return back()->with('success', 'error');
             }
 
             $orders = Order::where('item_id', $itemId)->get();

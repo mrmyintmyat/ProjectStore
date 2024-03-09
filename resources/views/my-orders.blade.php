@@ -67,14 +67,15 @@ use App\Models\Item;
                 </div> --}}
                 <div class="mt-0 cart_form p-lg-0" id="orderform">
                     @if (count($orders) != 0)
-                        @foreach ($orders as $cart)
+                        @foreach ($orders as $order)
                             <?php
-                            $item = Item::find($cart->item_id);
+                            $item = Item::find($order->item_id);
                             ?>
+                            @if ($item)
                             <div class="col-12 cart mb-1" style="height: 110px;">
                                 <div class="row g-0 h-100 w-100 border">
                                     <div class="col-md-3 col-5 h-100">
-                                        <a class="w-100" href="/detail/{{ $cart->id }}">
+                                        <a class="w-100" href="/detail/{{ $item->id }}">
                                             <img src="/storage/item-images/{{ $item->item_image }}"
                                                 class="h-100 w-100 img-fluid" alt="Error">
                                         </a>
@@ -89,44 +90,44 @@ use App\Models\Item;
                                                     <p class="card-text m-0">
                                                         <small class=""
                                                             style="color:
-                                                        @if ($cart->status === 'reviewing') blue;
-                                                        @elseif($cart->status == 'cancelled')
+                                                        @if ($order->status === 'reviewing') blue;
+                                                        @elseif($order->status == 'cancelled')
                                                             red;
-                                                        @elseif($cart->status == 'done')
+                                                        @elseif($order->status == 'done')
                                                             green;
                                                         @else
                                                             black; @endif">
-                                                            @if ($cart->status == 'done')
+                                                            @if ($order->status == 'done')
                                                                 Completed
                                                             @else
-                                                                {{ $cart->status }}
+                                                                {{ $order->status }}
                                                             @endif
                                                         </small>
                                                     </p>
 
                                                     <div class="price">
-                                                        {{ $cart->total }}
+                                                        {{ $order->total }}
                                                     </div>
                                                 </div>
                                             </div>
                                             <span id="item_count" class="d-none" value=""
                                                 hidden>{{ $item->item_count }}</span>
                                             <span id="org_price" class="d-none" value="" hidden>
-                                                @if ($cart->check_price == 'org_price')
+                                                @if ($order->check_price == 'org_price')
                                                     {{ $item->price }}
                                                 @else
                                                     {{ $item->reduced_price }}
                                                 @endif
                                             </span>
                                             <span class="px-2 d-none fs-6 count user-select-none">
-                                                {{ $cart->count }}
+                                                {{ $order->count }}
                                             </span>
                                         </div>
                                     </div>
                                     <div class="col-md-1 col-2 d-flex justify-content-center align-items-center">
                                         <div class="form-check d-flex justify-content-center align-items-center p-0">
                                             <div class="dropdown">
-                                                @if ($cart->status == 'reviewing')
+                                                @if ($order->status == 'reviewing')
                                                 <button class="btn btn-white dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fas fa-ellipsis-h"></i>
                                                 </button>
@@ -135,10 +136,10 @@ use App\Models\Item;
                                                     <li>
                                                         <button type="button" class="dropdown-item btn btn-sm btn-primary rounded-0 w-100"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#staticBackdrop{{ $cart->id }}">Cancel</button>
+                                                        data-bs-target="#staticBackdrop{{ $order->id }}">Cancel</button>
                                                     </li>
                                                 </ul>
-                                                <div class="modal fade" id="staticBackdrop{{ $cart->id }}" data-bs-backdrop="static"
+                                                <div class="modal fade" id="staticBackdrop{{ $order->id }}" data-bs-backdrop="static"
                                                     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered">
@@ -149,7 +150,7 @@ use App\Models\Item;
                                                             <div class="modal-footer border-0 p-0 px-2 pb-2">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">No</button>
-                                                                <form action="{{ url('orders/' . $cart->id) }}" method="post">
+                                                                <form action="{{ url('orders/' . $order->id) }}" method="post">
                                                                     @csrf @method('DELETE')
                                                                     <button type="submit" class="btn btn-primary">Yes</button>
                                                                 </form>
@@ -163,13 +164,33 @@ use App\Models\Item;
                                                     name="item_data[{{ $item->title }}][id]" value="{{ $cart->id }}">
                                             @endif --}}
                                             <input class="count_input" type="hidden"
-                                                name="item_data[{{ $item->title }}][count]" value="{{ $cart->count }}">
+                                                name="item_data[{{ $item->title }}][count]" value="{{ $order->count }}">
                                             <input type="hidden" name="item_data[{{ $item->title }}][cart_id]"
-                                                value="{{ $cart->id }}">
+                                                value="{{ $order->id }}">
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            @else
+                            <div class="col-12 cart mb-1" style="height: 110px;">
+                                <div class="row g-0 h-100 w-100 border">
+                                    <div class="col-md-3 col-5 h-100">
+                                        <a class="w-100">
+                                            <img src="https://i1.sndcdn.com/avatars-000380110130-s9jvkb-t240x240.jpg"
+                                                class="h-100 w-100 img-fluid" alt="Error">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-8 col-7 h-100">
+                                        <div class="card-body d-flex flex-md-row flex-column justify-content-center h-100">
+                                            <div class="text-muted col-md-6 d-flex align-items-center ps-2">
+                                                This item is deleted by owner. If you have any problems, please contact to support
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+
                         @endforeach
                     @else
                         <h3 class="text-center w-100 py-2">No Orders</h3>
