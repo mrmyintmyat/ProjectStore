@@ -74,7 +74,7 @@ use App\Models\Item;
                             <div class="col-12 cart mb-1" style="height: 110px;">
                                 <div class="row g-0 h-100 w-100 border">
                                     <div class="col-md-3 col-5 h-100">
-                                        <a class="w-100" href="/detail/{{ $item->id }}">
+                                        <a class="w-100" href="/detail/{{ $cart->id }}">
                                             <img src="/storage/item-images/{{ $item->item_image }}"
                                                 class="h-100 w-100 img-fluid" alt="Error">
                                         </a>
