@@ -1,31 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-            @error('name')
-                <span class="text-warning">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-            @error('identifier')
-                <span class="text-warning">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-            @error('password')
-                <span class="text-warning">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-            @error('email')
-                <span class="text-warning">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-            @error('select_chat_id')
-                <span class="text-warning">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
             <main class="d-flex align-items-center justify-content-center container-md p-0">
                 <div class="d-flex flex-column-reverse flex-md-row w-100" id="main">
                     <section class="shadow-sm col-md-7 d-flex justify-content-center align-items-center">
@@ -34,6 +9,31 @@
                                 @csrf
                                 <div id="form1">
                                     <h3 class="fs-1 fw-bold">REGISTER</h3>
+                                    @error('name')
+                                    <span class="text-warning">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                @error('identifier')
+                                    <span class="text-warning">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                @error('password')
+                                    <span class="text-warning">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                @error('email')
+                                    <span class="text-warning">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                @error('select_chat_id')
+                                    <span class="text-warning">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                                     <div class="inputBox">
                                         <input id="name" type="text" class="@error('name') is-invalid @enderror"
                                             name="name" value="{{ old('name') }}" required autocomplete="name"

@@ -54,7 +54,7 @@ class ProfileController extends Controller
             $user->email_verified_at = null;
             $user->update();
 
-            return redirect()->route('verification.notice');
+            return redirect()->route('email_verify_form');
         }
     }
 }
